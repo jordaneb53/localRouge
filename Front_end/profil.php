@@ -91,35 +91,35 @@
 
             <a href="#" id="backModal">Retour</a>
 
-            <div id="loginModal" class="modal_connexion">
-                <div class="modal-content">
-                    <span id="closeLoginModal" class="close-btn">&times;</span>
-                    <h2>Connexion</h2>
-
-                    <form id="loginForm">
-                        <div class="form-group">
-                            <label for="loginEmail">Email:</label>
-                            <input type="email" id="loginEmail" name="email" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="loginPassword">Mot de passe:</label>
-                            <div class="password-container">
-                                <input type="password" id="loginPassword" name="password" required>
-                                <span class="toggle-password" onclick="togglePassword()">👁</span>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <button type="submit">Se connecter</button>
-                        </div>
-                    </form>
-
-                    <p><a href="reset-password.html">Mot de passe oublié ?</a></p>
-                </div>
-            </div>
-            <p><a href="reset-password.html">Mot de passe oublié ?</a></p>
         </div>
+        <div id="loginModal" class="modal_connexion">
+            <div class="modal-content">
+                <button id="closeLoginModal" class="close-btn">
+                    <i class="ri-close-large-line"></i>
+                </button>
+                <h2>Connexion</h2>
+
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email:</label>
+                        <input type="email" id="loginEmail" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loginPassword">Mot de passe:</label>
+                        <div class="password-container">
+                            <input type="password" id="loginPassword" name="password" required>
+                            <span class="toggle-password" onclick="togglePassword()">👁</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" id="btnLogin">Se connecter</button>
+                    </div>
+                </form>
+
+                <p id="motPassOublier"><a href="reset-password.html">Mot de passe oublié ?</a></p>
+            </div>
         </div>
         <div class="titre_profil">
             <h1>Mon Profil</h1>
@@ -130,39 +130,43 @@
             <div class="card_profil">
                 <img src="image/25251050-photo-de-profil-d-affai.jpg" alt="Image de Profil">
                 <h2>DUPONT Antoine</h2>
-                <span>Date de création : 02/02/2002</span>
-                <span>Référence client : N°0123456789</span>
-                <span>Date de naissance : 07/11/1991</span>
                 <span>Adresse : 17 rue Albert Lebrun</span>
                 <span>Code postale : 54000</span>
                 <span>Ville : NANCY</span>
-                <span>Téléphone : 06.24.33.55.69</span>
                 <span>Mail : dupont@gmail.com</span>
-                <a href="#" class="btn">Modifier</a>
+                <a href="modification_profil.php" class="btn">Modifier</a>
             </div>
             <div class="tableau_profil">
-                <h3>Mes informations </h3>
+                <h3>Mon véhicule </h3>
                 <div class="table-container_profil">
                     <table>
                         <tr>
-                            <th>Nom</th>
-                            <th>Information</th>
+                            <th>Mon véhicule</th>
+                            <th>Informations</th>
                         </tr>
                         <tr>
-                            <td>Nom</td>
-                            <td>Dupont</td>
+                            <td>Marque</td>
+                            <td>Mercedes</td>
                         </tr>
                         <tr>
-                            <td>Prénom</td>
-                            <td>Antoine</td>
+                            <td>Modele</td>
+                            <td>Classe C63S AMG</td>
                         </tr>
                         <tr>
-                            <td>Réf. Client</td>
-                            <td>N°0123456789</td>
+                            <td>1<sup>er</sup> Imamatriculation</td>
+                            <td>17/05/2024</td>
                         </tr>
                         <tr>
-                            <td>Adresse</td>
-                            <td>17 rue Albert Lebrun</td>
+                            <td>Imamatriculation</td>
+                            <td>AA-666-AA</td>
+                        </tr>
+                        <tr>
+                            <td>Motorisation</td>
+                            <td>SP 98</td>
+                        </tr>
+                        <tr>
+                            <td>Puissance</td>
+                            <td>680 cv</td>
                         </tr>
                     </table>
                 </div>

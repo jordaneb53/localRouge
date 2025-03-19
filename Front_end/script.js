@@ -372,3 +372,4 @@ document.addEventListener("DOMContentLoaded", function () {
         passwordInput.type = passwordInput.type === "password" ? "text" : "password";
     };
 });
+

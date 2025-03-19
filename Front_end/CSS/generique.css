@@ -2,7 +2,6 @@
 
 body {
     background-color: #292929;
-    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     font-family: "Inknut Antiqua", serif;
@@ -213,12 +212,13 @@ nav a,
     margin-right: 10px;
     border: 1px solid transparent;
     line-height: 60px;
-    padding-left: 50px;
-    padding-right: 50px;
 }
 
-nav a:hover,
 .icons:hover {
+    color: #EC221F;
+}
+
+nav a:hover {
     border: 1px solid #EC221F;
     background-color: #EC221F;
     border-radius: 10px;
@@ -319,7 +319,7 @@ button {
 
 button:hover {
     background-color: darkred;
-    transform: scale(1.05);
+
 }
 
 footer {
@@ -605,7 +605,7 @@ div.numero-client {
     /* Largeur fixe */
     flex-shrink: 0;
     /* Empêche la carte de rétrécir */
-    7 margin-left: 0;
+    margin-left: 0;
     /* Supprime le décalage trop important */
     transform: translateX(-50px);
     /* Décale légèrement la carte vers la gauche */
@@ -634,14 +634,14 @@ div.numero-client {
 .card_profil .btn {
     background-color: #EC221F;
     color: white;
-    padding: 10px 20px;
+    padding: auto;
     border: none;
-    border-radius: 5px;
+    border-radius: 25px;
     cursor: pointer;
     text-decoration: none;
     font-size: 14px;
     margin-top: 15px;
-    /* Ajouter un peu d'espace au-dessus du bouton */
+    width: 100px;
 }
 
 .card_profil .btn:hover {
@@ -695,6 +695,8 @@ div.numero-client {
     /* Désactive le scroll horizontal */
 }
 
+
+
 table {
     width: 100%;
     /* Force le tableau à occuper toute la largeur disponible */
@@ -715,6 +717,7 @@ th {
     background-color: #EC221F;
     color: white;
     font-size: 16px;
+
 }
 
 td {
@@ -942,7 +945,7 @@ tr:hover {
     border: none;
     background-color: transparent;
     cursor: pointer;
-    font-size: 15px;
+    font-size: 1.3rem;
     font-weight: bold;
     gap: 20px;
     color: #fff;
@@ -955,8 +958,8 @@ tr:hover {
 
 
 #displayModal:hover {
-    color: #fff;
-    transform: scale(1);
+    color: #EC221F;
+
 
 }
 
@@ -1358,10 +1361,14 @@ button:hover {
     border: none;
     background-color: transparent;
     cursor: pointer;
-    font-size: 15px;
+    font-size: 1.3rem;
     font-weight: bold;
     gap: 20px;
     color: #fff;
+}
+
+#openLoginModal:hover {
+    color: #EC221F;
 }
 
 #loginModal {
@@ -1483,6 +1490,61 @@ button:hover {
 }
 
 
+
+.containerModification {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.form-section {
+    width: 48%;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.form-section input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    box-sizing: border-box;
+    font-size: 1em;
+}
+
+.btnModification {
+    display: flex;
+    justify-content: center;
+    background-color: #EC221F;
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.3rem;
+    padding: 10px 20px;
+    cursor: pointer;
+    align-items: center;
+    width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.titreModification {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    color: white;
+    text-shadow: 2px 2px 2px #EC221F;
+    -webkit-text-stroke: 0.5px #EC221F;
+    font-size: 40px;
+    margin-left: 10px;
+}
+
+.btnModification:hover {
+    background-color: darkred;
+}
+
 @media (max-width: 980px) {
 
     th,
@@ -1519,7 +1581,7 @@ button:hover {
 
     .nav_link ul {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         width: 100%;
         flex-wrap: wrap;
         justify-content: center;
