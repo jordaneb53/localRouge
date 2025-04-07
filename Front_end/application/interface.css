@@ -1,0 +1,302 @@
+@import url('https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@300;400;500;600;700;800;900&display=swap');
+
+body {
+
+    font-family: "Inknut Antiqua", serif;
+    overflow-x: hidden;
+    margin: 0;
+
+}
+
+header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #292929;
+    padding: 10px;
+}
+
+header ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+header ul li {
+    position: relative;
+}
+
+header ul li a {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: space-around;
+    gap: 40px;
+    padding-right: 50px;
+    font-size: 1.3rem;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+header ul li a:hover {
+    color: #EC221F;
+
+}
+
+.sousMenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #292929;
+    display: none;
+    min-width: 190px;
+    border-radius: 15px;
+}
+
+.sousMenu li {
+    margin: 0;
+
+}
+
+.sousMenu a {
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    display: block;
+}
+
+li:hover .sousMenu {
+    display: block;
+}
+
+
+.login-form {
+    width: 300px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.login-form input {
+    width: 95%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid black;
+    box-shadow: 2px 2px 2px #EC221F;
+    border-radius: 25px;
+    font-size: 16px;
+}
+
+.login-form button {
+    width: 50%;
+    padding: 10px;
+    background: #EC221F;
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 70px;
+}
+
+.login-form button:hover {
+    background-color: darkred;
+    color: #fff;
+}
+
+.password-container {
+    position: relative;
+    width: 100%;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 32px;
+    top: 46%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 18px;
+    color: #292929;
+    transition: color 0.3s ease;
+}
+
+.toggle-password1 {
+    position: absolute;
+    right: 21px;
+    top: 30%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 18px;
+    color: #292929;
+    transition: color 0.3s ease;
+}
+
+.login-form p a {
+    color: black;
+    text-decoration: none;
+}
+
+.login-form p a:hover {
+    color: #EC221F;
+}
+
+.reset-password {
+    width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.reset-password input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid black;
+    box-shadow: 2px 2px 2px #EC221F;
+    border-radius: 25px;
+    font-size: 16px;
+}
+
+.reset-password select {
+    width: 95%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid black;
+    box-shadow: 2px 2px 2px #EC221F;
+    border-radius: 25px;
+    font-size: 16px;
+    margin-right: 50px;
+}
+
+
+.reset-password button {
+    width: 50%;
+    padding: 10px;
+    background: #EC221F;
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 100px;
+}
+
+.reset-password button:hover {
+    background-color: darkred;
+    color: #fff;
+}
+
+.required {
+    color: red;
+}
+
+.error {
+    color: red
+}
+
+.error input,
+.error textarea {
+    border-color: red;
+    box-shadow: 2px 2px 2px red;
+}
+
+.error label {
+    color: black;
+}
+
+h1 {
+    margin-left: 20px;
+    color: #fff;
+    font-weight: bold;
+    text-shadow: 2px 2px 2px #EC221F;
+}
+
+.container {
+    position: relative;
+    width: 60px;
+    /* Largeur réduite pour afficher uniquement les icônes */
+    height: 100vh;
+    background-color: #292929;
+    border-radius: 0px 15px 15px 0px;
+    transition: width 0.3s;
+    overflow: hidden;
+    /* Empêche le texte de déborder */
+}
+
+.nav-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #292929;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.nav-bar li {
+    padding: 10px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 50px;
+}
+
+.nav-bar i {
+    font-size: 2rem;
+    margin-left: 40px;
+    width: 40px;
+    text-align: center;
+}
+
+.nav-bar:hover i {
+    font-size: 2rem;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.nav-bar li:hover {
+    background-color: #EC221F;
+    border-radius: 0px 50px 50px 0px;
+    text-align: center;
+}
+
+
+.container:hover {
+    width: 200px;
+    /* Largeur étendue pour afficher le texte */
+}
+
+.nav-bar li span {
+    margin-left: 10px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.container:hover .nav-bar li {
+    justify-content: flex-start;
+}
+
+.container:hover .nav-bar li span {
+    opacity: 1;
+}

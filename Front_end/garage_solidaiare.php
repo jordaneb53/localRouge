@@ -1,20 +1,25 @@
+<?php
+session_start();
+
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="CSS/generique.css">
+    <link rel="stylesheet" href="assets/CSS/generique.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-    <script src="script.js" defer></script>
+    <script src="assets/js/script.js" defer></script>
 
 
     <title>Garage Solidaire /Garage MNS</title>
 </head>
 
 <body>
-    <?php include_once 'header.php'; ?>
+    <?php include_once 'template/header.php'; ?>
     <main>
         <div id="modal">
             <div class="form-container">
@@ -118,7 +123,8 @@
                 <p id="motPassOublier"><a href="reset-password.html">Mot de passe oublié ?</a></p>
             </div>
         </div>
-        <img class="garageSolidaire" src="image/pont_rge_bleu.jpg" alt="garage avec pont automobile bleu et rouge ">
+        <img class="garageSolidaire" src="assets/image/pont_rge_bleu.jpg"
+            alt="garage avec pont automobile bleu et rouge ">
         <div class="solidaire">
             <h1> MNS GARAGE : Votre Garage Solidaire</h1>
 
@@ -135,7 +141,7 @@
                 Autonomie et Apprentissage : En devenant membre, vous aurez l'opportunité d'apprendre et de maîtriser
                 les techniques de réparation automobile. C'est une excellente occasion de développer de nouvelles
                 compétences tout en prenant soin de votre véhicule.</span>
-            <img class="garageSolidaire" src="image/garage_solidaire.jpg" alt="garage solidaire">
+            <img class="garageSolidaire" src="assets/image/garage_solidaire.jpg" alt="garage solidaire">
             <span>Pourquoi nous rejoindre ?
                 Économies : Réalisez vos réparations vous-même et économisez sur les coûts de main-d'œuvre.
                 Autonomie : Devenez autonome dans l'entretien de votre véhicule.
@@ -146,7 +152,7 @@
         </div>
         <button class="btn_solidaire">S'inscrire maintenant</button>
     </main>
-    <?php include_once 'footer.php'; ?>
+    <?php include_once 'template/footer.php'; ?>
 </body>
 
 </html>

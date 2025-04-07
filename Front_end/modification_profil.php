@@ -1,3 +1,8 @@
+<?php
+session_start();
+
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -5,8 +10,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="CSS/generique.css">
-    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="assets/CSS/generique.css">
+    <script src="assets/js/script.js" defer></script>
     <title>Modification des informations</title>
 </head>
 

@@ -14,8 +14,14 @@
     <header>
         <h1>Employés MNS GARAGE</h1>
         <ul>
-            <li>Déconnexion</li>
-            <li>Profils</li>
+            <li><a href="logout.php">Déconnexion</a></li>
+            <li>
+                <a href="#">Profils ▾</a>
+                <ul class="sousMenu">
+                    <li><a href="login.php">Admin</a></li>
+                    <li><a href="interface_employe.php">Employés</a></li>
+                </ul>
+            </li>
         </ul>
     </header>
     <main>

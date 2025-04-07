@@ -1,3 +1,8 @@
+<?php
+session_start();
+
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -5,15 +10,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="CSS/generique.css">
-    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="assets/CSS/generique.css">
+    <script src="assets/js/script.js" defer></script>
 
 
     <title>Réservation de rendez-vous</title>
 </head>
 
 <body>
-    <?php include_once 'header.php'; ?>
+    <?php include_once 'template/header.php'; ?>
     <main>
         <div class="rdv_solidaire">
             <h1>Prendre votre rendez-vous</h1>
@@ -30,7 +35,7 @@
             </div>
         </div>
     </main>
-    <?php include_once 'footer.php'; ?>
+    <?php include_once 'template/footer.php'; ?>
 </body>
 
 </html>

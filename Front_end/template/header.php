@@ -6,13 +6,23 @@
             <input type="text" id="recherche" placeholder="Rechercher"><i class="ri-search-2-line"></i>
         </div>
         <div class="users">
-            <div class="icons">
-                <button id="displayModal"><i class="ri-file-user-line"></i>Inscription</button>
+            <?php
+            if (isset($_SESSION['nom'])) { ?>
+                <p>Connecté en tant que :
+                    <?= htmlspecialchars($_SESSION['nom']) . ' ' . htmlspecialchars($_SESSION['prenom']) ?>
+                </p>
+                <img src="<?= htmlspecialchars($_SESSION['avatar']) ?>" alt="avatar profil" width="100px">
+                <a href="actions/logout.php">Déconnexion</a><br>
+            <?php } else { ?>
+
+                <div class="icons">
+                    <button id="displayModal"><i class="ri-file-user-line"></i>Inscription</button>
+                </div>
             </div>
-        </div>
-        <div class="icons">
-            <button id="openLoginModal"><i class="ri-login-box-line"></i>Se connecter</button>
-        </div>
+            <div class="icons">
+                <button id="openLoginModal"><i class="ri-login-box-line"></i>Se connecter</button>
+            </div>
+        <?php } ?>
     </div>
     </div>
     </div>
@@ -25,7 +35,24 @@
     <input type="text" id="recherche" placeholder="Rechercher">
     <i class="ri-search-2-line" id="iconsearch"></i>
 </div>
-
+<div class="usersMobile">
+    <?php if (isset($_SESSION['nom'])) { ?>
+        <div class="user-info">
+            <img src="<?= htmlspecialchars($_SESSION['avatar']) ?>" alt="avatar profil">
+            <p>Connecté en tant que :<?= htmlspecialchars($_SESSION['nom']) . ' ' . htmlspecialchars($_SESSION['prenom']) ?>
+            </p>
+        </div>
+        <a href="actions/logout.php" class="logout-icon" title="Déconnexion">
+            <i class="fas fa-sign-out-alt"></i>
+        </a>
+    <?php } else { ?>
+        <div class="icons">
+            <button id="displayModal"><i class="ri-file-user-line"></i> Inscription</button>
+            <button id="openLoginModal"><i class="ri-login-box-line"></i> Se connecter</button>
+        </div>
+    <?php } ?>
+</div>
+</div>
 <div class="burgerMenu">
     <div class="fermerBurger">
         <i class="ri-close-line"></i>
