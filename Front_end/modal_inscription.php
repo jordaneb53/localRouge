@@ -80,8 +80,8 @@
             </div>
 
             <div>
-                <input type="checkbox" id="conditionGarageSolidaire" name="conditionGarageSolidaire">
-                <label for="conditionGarageSolidaire">J'accepte les conditions d'ahdésion au garage
+                <input type="checkbox" name="garage_solidaire" id="garage_solidaire">
+                <label for="garage_solidaire">J'accepte les conditions d'ahdésion au garage
                     solidaire</label>
             </div>
             <div>
@@ -91,7 +91,6 @@
             </div>
             <div class="form-group">
                 <input type="submit" id="btn" value="S'inscrire">
-                <!-- <button type="submit" id="btn">S'inscrire</button> -->
             </div>
         </form>
     </div>

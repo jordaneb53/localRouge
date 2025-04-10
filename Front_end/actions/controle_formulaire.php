@@ -14,6 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $accepter_conditions = isset($_POST['accepter_conditions']);
     $telephone = htmlspecialchars($_POST['telephone']);
     $avatar = htmlspecialchars($_POST['avatar']);
+    $garage_solidaire = isset($_POST['garage_solidaire']) ? 1 : 0;
     $token = bin2hex(random_bytes(16)); // Token d'activation unique
     $expiration = date('Y-m-d H:i:s', time() + 86400); // 24 heures
     $confirmation = 0;
@@ -63,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         return;
     }
 
-    if (!preg_match("/^0[1-9]\d{10}$/", $telephone)) {
+    if (!preg_match("/^0[1-9]\d{8}$/", $telephone)) {
         echo "Numéro de téléphone invalide.";
         return;
     }
@@ -102,8 +103,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Insertion de l'utilisateur dans la base de données avec statut "non validé"
-        $stmt = $conn->prepare("INSERT INTO utilisateurs (nom_utilisateurs, prenom_utilisateurs, adresse_utilisateurs, ville_utilisateurs, code_postal, mot_de_passe_utilisateurs, telephone_utilisateurs, email_utilisateurs, avatar, token, token_expiration ,confirmation) 
-            VALUES (:nom, :prenom, :adresse, :ville, :code_postal, :mot_de_passe, :telephone, :email, :avatar, :token, :token_expiration, :confirmation)");
+        $stmt = $conn->prepare("INSERT INTO utilisateurs (nom_utilisateurs, prenom_utilisateurs, adresse_utilisateurs, ville_utilisateurs, code_postal, mot_de_passe_utilisateurs, telephone_utilisateurs, email_utilisateurs, avatar, garage_solidaire, token, token_expiration ,confirmation) 
+            VALUES (:nom, :prenom, :adresse, :ville, :code_postal, :mot_de_passe, :telephone, :email, :avatar, :garage_solidaire, :token, :token_expiration, :confirmation)");
         $stmt->bindParam(':nom', $nom);
         $stmt->bindParam(':prenom', $prenom);
         $stmt->bindParam(':adresse', $adresse);
@@ -122,6 +123,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $avatarFinal = isset($avatars[$avatar]) ? $avatars[$avatar] : $avatars['un'];
         $stmt->bindParam(':avatar', $avatarFinal);
+        $stmt->bindParam(':garage_solidaire', $garage_solidaire, PDO::PARAM_BOOL);
         $stmt->bindParam(':token', $token);
         $stmt->bindParam(':token_expiration', $expiration);
         $stmt->bindParam(':confirmation', $confirmation);

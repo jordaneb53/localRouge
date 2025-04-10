@@ -19,9 +19,11 @@ try {
 }
 
 // Récupérer les catégories
-$sql = "SELECT titre, images FROM categories";
+$sql = "SELECT * FROM categories";
 $stmt = $pdo->query($sql);
 $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$testeRecup = "ok";
 ?>
 
 
@@ -34,6 +36,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/CSS/generique.css">
     <script src="assets/js/script.js" defer></script>
+    <script src="assets/js/calendrier.js" defer></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.min.css" rel="stylesheet">
     <title>Service mécanique /Garage MNS</title>
 </head>
@@ -52,9 +55,11 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <?php if (empty($_SESSION['id'])) { ?>
                         <button class="connecsession">Prendre un rendez-vous</button>
                     <?php } else { ?>
-                        <a href="/planning.php" target="_blank">
-                            <button>Prendre un rendez-vous</button>
+                        <a href="/planning.php?id=<?= $categorie['Id_categories'] ?>&titre=<?= urlencode($categorie['titre']) ?>&duree=<?= htmlspecialchars($categorie['duree']) ?>"
+                            target="_blank">
+                            <button>Prendre un rendez-vous </button>
                         </a>
+
                     <?php } ?>
                 </div>
             <?php endforeach; ?>

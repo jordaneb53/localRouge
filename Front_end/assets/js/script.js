@@ -294,4 +294,39 @@ function connect(event) {
 document.getElementById('loginForm')?.addEventListener('submit', connect);
 document.getElementById('btnLogin')?.addEventListener('click', connect);
 
+// Récupère les paramètres 'id' et 'titre' dans l'URL
+const urlParams = new URLSearchParams(window.location.search);
+const id = urlParams.get('id');
+const titre = urlParams.get('titre');
+const duree = urlParams.get('dure');
+
+// Vérifie si les valeurs existent et les stocke dans sessionStorage
+if (id && titre) {
+    sessionStorage.setItem('idCategorie', id);
+    sessionStorage.setItem('titreCategorie', titre);
+} else {
+    console.error("Les paramètres 'id' et 'titre' sont manquants dans l'URL.");
+}
+
+// Récupérer la modale et les éléments associés
+let modal = document.getElementById("vehiculeModal");
+let btn = document.getElementById("openModalVehicule");
+let span = document.getElementById("closeModalVehicule");
+
+// Ouvrir la modale
+btn.onclick = function () {
+    modal.style.display = "block";
+}
+
+// Fermer la modale lorsque l'utilisateur clique sur le bouton "X"
+span.onclick = function () {
+    modal.style.display = "none";
+}
+
+// Fermer la modale si l'utilisateur clique en dehors de la modale
+window.onclick = function (event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
 

@@ -1,6 +1,9 @@
 <?php
 session_start();
-
+if (empty($_SESSION['id'])) {
+    header('Location: /projet_fil_rouge/front_end/index.php');
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -11,8 +14,7 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/CSS/generique.css">
-    <script src="assets/js/script.js" defer></script>
-
+    <script src="assets/js/calendrier.js" defer></script>
 
     <title>Réservation de rendez-vous</title>
 </head>

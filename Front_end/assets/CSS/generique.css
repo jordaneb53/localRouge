@@ -973,51 +973,27 @@ tr:hover {
     color: black;
 }
 
-/* Style de base pour la modale
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
-}
-
-/* Style du contenu de la modale */
-/* .modal-content {
-    background-color: #fff;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 500px;
-} */
-
-/* Style du bouton de fermeture */
-/* .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
+form label {
+    display: block;
+    margin-bottom: 5px;
+    text-align: left;
     font-weight: bold;
 }
 
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-} */
+form input {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    box-sizing: border-box;
+}
 
-.search {
+.modal-content .search {
     display: none;
 }
 
 
-
-/* Fenetre modal */
 
 #label {
     color: #fff;
@@ -1207,7 +1183,7 @@ div.message {
     padding-right: 30px;
 }
 
-.form-group span.toogleInscription {
+/* .form-group span.toogleInscription {
     position: absolute;
     right: 568px;
     transform: translateY(-50%);
@@ -1223,7 +1199,7 @@ div.message {
     transform: translateY(-50%);
     cursor: pointer;
     color: black;
-}
+} */
 
 span #toggleConfirmPassword {
     position: absolute;
@@ -1778,7 +1754,117 @@ div.usersMobile {
     display: none;
 }
 
+/* À mettre dans ton fichier assets/CSS/generique.css */
+
+.modal {
+    display: none;
+    /* cachée par défaut */
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* fond assombri */
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: auto;
+    padding: 30px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.3s ease;
+}
+
+.close {
+    float: right;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: red;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@media (min-width: 1400px) {
+    .form-group span.toogleInscription {
+        position: absolute;
+        right: 768px;
+        transform: translateY(-50%);
+        cursor: pointer;
+        margin-top: -26px;
+        color: black;
+    }
+
+    .form-group span.toogleConfirmInscription {
+        position: absolute;
+        right: 768px;
+        margin-top: 23px;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: black;
+    }
+}
+
+@media (max-width: 999px) and (min-width: 981px) {
+    .form-group span.toogleInscription {
+        position: absolute;
+        right: 688px;
+        /* Tu peux ajuster cette valeur selon ce que tu souhaites */
+        transform: translateY(-50%);
+        cursor: pointer;
+        margin-top: -26px;
+        color: black;
+    }
+
+    .form-group span.toogleConfirmInscription {
+        position: absolute;
+        right: 688px;
+        margin-top: 23px;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: black;
+    }
+}
+
 @media (max-width: 980px) {
+    .form-group span.toogleInscription {
+        position: absolute;
+        right: 568px;
+        transform: translateY(-50%);
+        cursor: pointer;
+        margin-top: -26px;
+        color: black;
+    }
+
+    .form-group span.toogleConfirmInscription {
+        position: absolute;
+        right: 568px;
+        margin-top: 23px;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: black;
+    }
 
     th,
     td {
@@ -1948,9 +2034,9 @@ div.usersMobile {
         font-size: 1.2rem;
     }
 
-    .search {
+    /* .search {
         display: block;
-    }
+    } */
 
     .search input[type="text"] {
         width: 200px;

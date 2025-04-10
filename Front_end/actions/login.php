@@ -30,6 +30,7 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
                 $_SESSION['email'] = $user['email_utilisateurs'];
                 $_SESSION['avatar'] = $user['avatar'];
                 $_SESSION['id'] = $user['Id_utilisateurs'];
+                $_SESSION['garage_solidaire'] = $user['garage_solidaire'];
 
                 $result = ["status" => "success"];
             }

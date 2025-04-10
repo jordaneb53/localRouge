@@ -4,6 +4,12 @@ if (empty($_SESSION['id'])) {
     header('Location: /projet_fil_rouge/front_end/index.php');
     exit();
 }
+if (isset($_GET['id']) && isset($_GET['titre'])) {
+    // Récupérer l'ID et le titre
+    $id = $_GET['id'];
+    $titre = $_GET['titre'];
+    $duree = $_GET['duree'];
+}
 ?>
 
 <!DOCTYPE html>
@@ -15,6 +21,7 @@ if (empty($_SESSION['id'])) {
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/CSS/generique.css">
     <script src="assets/js/calendrier.js" defer></script>
+    <script src="assets/js/script.js" defer></script>
     <title>Réservation de rendez-vous</title>
 </head>
 
@@ -22,7 +29,7 @@ if (empty($_SESSION['id'])) {
     <?php include('template/header.php'); ?>
     <main>
         <div class="rdv">
-            <h1>Prendre votre rendez-vous</h1>
+            <h1 data-duree="<?php echo htmlspecialchars($_GET['duree']); ?>">Prendre votre rendez-vous</h1>
             <p>Assurez-vous que votre jour et heure soit disponible !</p>
         </div>
         <div class="calendar">
@@ -35,6 +42,30 @@ if (empty($_SESSION['id'])) {
             </div>
         </div>
     </main>
+    <!-- Modal RDV -->
+    <div id="modalRdv" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Prendre un rendez-vous</h2>
+            <form id="formRdv">
+                <label>Type de réparation :</label>
+                <input type="text" id="typeReparation" name="typeReparation" value="<?= htmlspecialchars($titre) ?>"
+                    readonly>
+
+                <label>Date :</label>
+                <input type="text" id="dateRdv" name="dateRdv" readonly>
+
+                <label>Créneau horaire :</label>
+                <input type="text" id="horaireRdv" name="horaireRdv" readonly>
+
+                <label>Véhicule :</label>
+                <input type="text" id="vehiculeClient" name="vehiculeClient" readonly>
+
+                <button type="submit">Confirmer</button>
+            </form>
+        </div>
+    </div>
+
     <?php include('template/footer.php'); ?>
 </body>
 

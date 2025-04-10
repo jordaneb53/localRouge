@@ -30,11 +30,6 @@
 
 <i class="ri-menu-line" id="iconBurger"></i>
 
-<div class="search">
-    <label for="recherche"></label>
-    <input type="text" id="recherche" placeholder="Rechercher">
-    <i class="ri-search-2-line" id="iconsearch"></i>
-</div>
 <div class="usersMobile">
     <?php if (isset($_SESSION['nom'])) { ?>
         <div class="user-info">
@@ -60,19 +55,81 @@
 
     <nav class="navBurger">
         <ul>
-            <li><a href="index.php">Accueil</a></li>
-            <li><a href="service_mecanique.php">Service mécanique</a></li>
-            <li><a href="service_carroserie.php">Service carroserie</a></li>
-            <li><a href="revision.php">Révision</a></li>
-            <li><a href="garage_solidaiare.php">Garage solidaire</a></li>
-            <li><a href="vehicule_occasion.php">Véhicules d'occasions</a></li>
-            <li><a href="profil.php">Mon profil</a></li>
+
+
+            <?php if (isset($_SESSION['id'])): ?>
+                <?php if ($_SESSION['garage_solidaire'] == 1): ?>
+                    <li><a href="index.php">Accueil</a></li>
+                    <li><a href="service_mecanique_solidaire.php">Service Mecanique</a></li>
+                    <li><a href="service_carroserie_solidaire.php">Service Carroserie</a></li>
+                    <li><a href="garage_solidaire2.php">Garage solidaire</a></li>
+                    <li><a href="revision.php">Révision</a></li>
+                    <li><a href="vehicule_occasion.php">Véhicules d'occasions</a></li>
+                    <li><a href="profil.php">Mon profil</a></li>
+                <?php else: ?>
+                    <li><a href="index.php">Accueil</a></li>
+                    <li><a href="service_mecanique.php">Service mécanique</a></li>
+                    <li><a href="service_carroserie.php">Service carroserie</a></li>
+                    <li><a href="revision.php">Révision</a></li>
+                    <li><a href="garage_solidaire.php">Garage solidaire</a></li>
+                    <li><a href="vehicule_occasion.php">Véhicules d'occasions</a></li>
+                    <li><a href="profil.php">Mon profil</a></li>
+                <?php endif; ?>
+            <?php else: ?>
+                <!-- Nav visible pour les non-connectés -->
+                <li><a href="index.php">Accueil</a></li>
+                <li><a href="service_mecanique.php">Service mécanique</a></li>
+                <li><a href="service_carroserie.php">Service carrosserie</a></li>
+                <li><a href="revision.php">Révision</a></li>
+                <li><a href="garage_solidaire.php">Garage solidaire</a></li>
+                <li><a href="vehicule_occasion.php">Véhicules d'occasions</a></li>
+
+            <?php endif; ?>
         </ul>
     </nav>
 </div>
 
 <hr class="line">
+
 <nav class="nav_link">
+    <ul>
+
+
+        <?php if (isset($_SESSION['id'])): ?>
+            <?php if ($_SESSION['garage_solidaire'] == 1): ?>
+                <li><a href="index.php">Accueil</a></li>
+                <li><a href="service_mecanique_solidaire.php">Service Mecanique</a></li>
+                <li><a href="service_carroserie_solidaire.php">Service Carroserie</a></li>
+                <li><a href="garage_solidaire2.php">Garage solidaire</a></li>
+                <li><a href="revision.php">Révision</a></li>
+                <li><a href="vehicule_occasion.php">Véhicules d'occasions</a></li>
+                <li><a href="profil.php">Mon profil</a></li>
+            <?php else: ?>
+                <li><a href="index.php">Accueil</a></li>
+                <li><a href="service_mecanique.php">Service mécanique</a></li>
+                <li><a href="service_carroserie.php">Service carroserie</a></li>
+                <li><a href="revision.php">Révision</a></li>
+                <li><a href="garage_solidaiare.php">Garage solidaire</a></li>
+                <li><a href="vehicule_occasion.php">Véhicules d'occasions</a></li>
+                <li><a href="profil.php">Mon profil</a></li>
+            <?php endif; ?>
+        <?php else: ?>
+            <!-- Nav visible pour les non-connectés -->
+            <li><a href="index.php">Accueil</a></li>
+            <li><a href="service_mecanique.php">Service mécanique</a></li>
+            <li><a href="service_carroserie.php">Service carrosserie</a></li>
+            <li><a href="revision.php">Révision</a></li>
+            <li><a href="garage_solidaire.php">Garage solidaire</a></li>
+            <li><a href="vehicule_occasion.php">Véhicules d'occasions</a></li>
+
+        <?php endif; ?>
+    </ul>
+</nav>
+
+
+
+
+<!-- <nav class="nav_link">
     <ul>
         <li><a href="index.php">Accueil</a></li>
         <li><a href="service_mecanique.php">Service mécanique</a></li>
@@ -82,4 +139,4 @@
         <li><a href="vehicule_occasion.php">Véhicules d'occasions</a></li>
         <li><a href="profil.php">Mon profil</a></li>
     </ul>
-</nav>
+</nav> -->

@@ -1,32 +1,33 @@
-<!DOCTYPE html>
-<html lang="fr">
+<?php
+require $_SERVER["DOCUMENT_ROOT"] . '/config/db.php';
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="interface.css">
-    <script src="script.app.js" defer></script>
-    <title>Connexion MNS GARAGE</title>
-</head>
+// Récupérer les données du formulaire
+$nom_employes = $_POST['username'];
+$mot_de_passe_employes = $_POST['password'];
 
-<body>
-    <h1>MNS GARAGE</h1>
-    <form class="login-form" action="login.php" method="POST">
-        <h2>Connexion</h2>
+// Requête pour vérifier les informations d'identification
+$sql = "SELECT * FROM employes WHERE nom_employes = :nom AND mot_de_passe_employes = :mot_de_passe";
+$stmt = $conn->prepare($sql);
 
-        <label for="username">Nom:</label>
-        <input type="text" id="username" name="username" placeholder="Nom d'utilisateur" required>
+// Utilisation correcte de bindParam avec PDO
+$stmt->bindParam(':nom', $nom_employes, PDO::PARAM_STR);
+$stmt->bindParam(':mot_de_passe', $mot_de_passe_employes, PDO::PARAM_STR);
 
-        <label for="loginPassword">Mot de passe:</label>
-        <div class="password-container">
-            <input type="password" id="loginPassword" name="password" placeholder="Mot de passe" required>
-            <span class="toggle-password1">👁</span>
-        </div>
+$stmt->execute();
+$result = $stmt->fetchAll();
 
-        <button type="submit" id="loginButton">Se connecter</button>
+// Vérifier si un utilisateur a été trouvé
+if (count($result) > 0) {
+    // Connexion réussie
+    echo "Connexion réussie !";
+    header('Location: interface_admin.php');
+    exit(); // Assurez-vous de terminer le script après la redirection
+} else {
+    // Échec de la connexion
+    echo "Nom d'utilisateur ou mot de passe incorrect.";
+}
 
-        <p id="motPassOublier"><a href="reset-password.html">Mot de passe oublié ?</a></p>
-    </form>
-</body>
-
-</html>
+// Fermer la connexion
+$stmt = null;
+$conn = null;
+?>
