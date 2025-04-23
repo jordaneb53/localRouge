@@ -22,7 +22,7 @@ if (!$user) {
 }
 
 // Vérifier si l'utilisateur a un véhicule enregistré
-$sql_vehicule = "SELECT * FROM vehicules WHERE Id_vehicule = :id";
+$sql_vehicule = "SELECT * FROM vehicules WHERE Id_utilisateurs = :id";
 $stmt_vehicule = $conn->prepare($sql_vehicule);
 $stmt_vehicule->bindParam(':id', $id, PDO::PARAM_INT);
 $stmt_vehicule->execute();
@@ -74,7 +74,7 @@ $vehicule = $stmt_vehicule->fetch(PDO::FETCH_ASSOC);
                     <?= isset($user['ville_utilisateurs']) && !is_null($user['ville_utilisateurs']) ? htmlspecialchars($user['ville_utilisateurs']) : 'Ville non disponible' ?></span>
                 <span>Mail :
                     <?= isset($user['email_utilisateurs']) && !is_null($user['email_utilisateurs']) ? htmlspecialchars($user['email_utilisateurs']) : 'E-mail non disponible' ?></span>
-                <a href="modification_profil.php" class="btn">Modifier</a>
+                <a href="actions/modification_profil.php" class="btn">Modifier</a>
             </div>
 
 
@@ -93,10 +93,17 @@ $vehicule = $stmt_vehicule->fetch(PDO::FETCH_ASSOC);
                         $utilisateur_id = $_SESSION['id']; // Utilisation de l'ID de l'utilisateur connecté
                         
                         // Modification de la requête pour récupérer marque, modèle, année et kilométrage
-                        $sql = "SELECT v.marque_vehicules, v.modele_vehicules, v.annee, v.kilometrage 
-                    FROM vehicules v
-                    JOIN utilisateurs_vehicules uv ON v.Id_vehicule = uv.Id_vehicule
-                    WHERE uv.Id_utilisateurs = :utilisateur_id";
+                        $sql = "
+SELECT 
+    m.nom_marques AS marque,
+    mo.nom_modele AS modele,
+    v.annee,
+    v.kilometrage
+FROM vehicules v
+JOIN marques m ON v.Id_marques = m.Id_marques
+JOIN modeles mo ON mo.Id_modeles = v.Id_modeles
+WHERE v.Id_utilisateurs = :utilisateur_id";
+
 
                         $stmt = $conn->prepare($sql);
                         $stmt->bindParam(':utilisateur_id', $utilisateur_id);
@@ -107,8 +114,8 @@ $vehicule = $stmt_vehicule->fetch(PDO::FETCH_ASSOC);
                         if ($vehicules) {
                             foreach ($vehicules as $vehicule) {
                                 // Vérification et échappement des valeurs avant l'affichage
-                                $marque = isset($vehicule['marque_vehicules']) && !is_null($vehicule['marque_vehicules']) ? htmlspecialchars($vehicule['marque_vehicules']) : 'Marque non disponible';
-                                $modele = isset($vehicule['modele_vehicules']) && !is_null($vehicule['modele_vehicules']) ? htmlspecialchars($vehicule['modele_vehicules']) : 'Modèle non disponible';
+                                $marque = isset($vehicule['marque']) ? htmlspecialchars($vehicule['marque']) : 'Marque non disponible';
+                                $modele = isset($vehicule['modele']) ? htmlspecialchars($vehicule['modele']) : 'Modèle non disponible';
                                 $annee = isset($vehicule['annee']) && !is_null($vehicule['annee']) ? htmlspecialchars($vehicule['annee']) : 'Année non disponible';
                                 $kilometrage = isset($vehicule['kilometrage']) && !is_null($vehicule['kilometrage']) ? htmlspecialchars($vehicule['kilometrage']) : 'Kilométrage non disponible';
 
@@ -142,16 +149,35 @@ $vehicule = $stmt_vehicule->fetch(PDO::FETCH_ASSOC);
         </div>
 
         <!-- La fenêtre modale -->
-        <div id="vehiculeModal" class="modal">
+        <div id="modalVehicule" class="modal">
             <div class="modal-content">
                 <span id="closeModalVehicule" class="close">&times;</span>
                 <h3>Ajouter un véhicule</h3>
                 <form action="actions/ajout_vehicule.php" method="post">
-                    <label for="marque_vehicules">Marque :</label>
-                    <input type="text" name="marque_vehicules" required>
+                    <label for="nom_marques">Marque :</label>
+                    <select name="nom_marques" id="marqueSelect" required>
+                        <option value="">Sélectionner une marque</option>
+                        <?php
+                        // Affichage des marques à partir de la table marques
+                        $stmt = $conn->prepare("SELECT DISTINCT nom_marques FROM marques ORDER BY nom_marques");
+                        $stmt->execute();
+                        $marques = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                        foreach ($marques as $m) {
+                            echo "<option value=\"" . htmlspecialchars($m['nom_marques']) . "\">" . htmlspecialchars($m['nom_marques']) . "</option>";
+                        }
+                        ?>
+                    </select>
 
                     <label for="modele_vehicules">Modèle :</label>
-                    <input type="text" name="modele_vehicules" required>
+                    <select name="modele_vehicules" id="modeleSelect" required>
+                        <option value="">Sélectionnez d'abord une marque</option>
+                    </select>
+
+                    <label for="motorisation">Motorisation :</label>
+                    <select name="motorisation" id="motorisationSelect" required>
+                        <option value="">Sélectionnez d'abord un modèle</option>
+                    </select>
 
                     <label for="immatriculation">Immatriculation :</label>
                     <input type="text" name="immatriculation" required>
@@ -165,16 +191,13 @@ $vehicule = $stmt_vehicule->fetch(PDO::FETCH_ASSOC);
                     <label for="kilometrage">Kilométrage :</label>
                     <input type="number" name="kilometrage" required>
 
-                    <label for="motorisation">Motorisation :</label>
-                    <input type="text" name="motorisation" required>
-
                     <input type="hidden" name="id_utilisateur" value="<?= $_SESSION['id'] ?>">
 
                     <button type="submit">Ajouter</button>
                 </form>
-
             </div>
         </div>
+
 
 
         <div class="buttons_profil">

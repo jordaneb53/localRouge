@@ -22,7 +22,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         ]);
 
         if ($stmt->rowCount()) {
-            $message = "Mot de passe modifié avec succès.";
+            header("Location: ../index.php");
+            exit();
         } else {
             $message = "Email introuvable ou mot de passe déjà à jour.";
         }
@@ -71,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <input type="password" name="new_password" placeholder="Nouveau mot de passe" required>
         <label for="confirm_password">Confirmer le mot de passe<span class="required">*</span>:</label>
         <input type="password" name="confirm_password" placeholder="Confirmer le mot de passe" required>
-        <a href="../index.php"></a><button type="submit">Confirmer</button>
+        <button type="submit">Confirmer</button>
 
         <div class="message"><?php echo htmlspecialchars($message); ?></div>
     </form>

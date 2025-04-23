@@ -1,5 +1,13 @@
 <?php
 session_start();
+require $_SERVER["DOCUMENT_ROOT"] . '/config/db.php';
+require $_SERVER["DOCUMENT_ROOT"] . '/config/session.php';
+
+// Récupérer les catégories
+$sql = "SELECT * FROM operations WHERE service_mecanique = 0";
+$stmt = $conn->query($sql);
+$categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 
 ?>
 
@@ -20,86 +28,25 @@ session_start();
     <?php include('template/header.php'); ?>
     <main>
         <section class="cards-container">
-            <div class="card">
-                <h2>PNEUS</h2>
-                <img src="assets/image/pneu2.jpg" alt="changement d'un pneu">
-                <a href="planning.php" target="_blank">
-                    <button>Prendre un rendez-vous</button>
-                </a>
-                <a href="planning_solidaire.php" target="_blank">
-                    <button class="btn_solidaire">Prendre un rendez-vous</button>
-                </a>
-            </div>
-            <div class="card">
-                <h2>FREINS</h2>
-                <img src="assets/image/freins.jpg" alt="changement d'un freins">
-                <a href="planning.php" target="_blank">
-                    <button>Prendre un rendez-vous</button>
-                </a>
-                <a href="planning_solidaire.php" target="_blank">
-                    <button class="btn_solidaire">Prendre un rendez-vous</button>
-                </a>
-            </div>
-            <div class="card">
-                <h2>AMORTISSEURS</h2>
-                <img src="assets/image/amortisseurs.jpg" alt="changement d'amortisseurs">
-                <a href="planning.php" target="_blank">
-                    <button>Prendre un rendez-vous</button>
-                </a>
-                <a href="planning_solidaire.php" target="_blank">
-                    <button class="btn_solidaire">Prendre un rendez-vous</button>
-                </a>
-            </div>
-            <div class="card">
-                <h2>VIDANGE</h2>
-                <img src="assets/image/vidange.jpg" alt="vidange">
-                <a href="planning.php" target="_blank">
-                    <button>Prendre un rendez-vous</button>
-                </a>
-                <a href="planning_solidaire.php" target="_blank">
-                    <button class="btn_solidaire">Prendre un rendez-vous</button>
-                </a>
-            </div>
-            <div class="card">
-                <h2>FILTRES</h2>
-                <img src="assets/image/filtres.jpg" alt="changement d'un filtre">
-                <a href="planning.php" target="_blank">
-                    <button>Prendre un rendez-vous</button>
-                </a>
-                <a href="planning_solidaire.php" target="_blank">
-                    <button class="btn_solidaire">Prendre un rendez-vous</button>
-                </a>
-            </div>
-            <div class="card">
-                <h2>RÉVISION</h2>
-                <img src="assets/image/revision.jpg" alt="révision">
-                <a href="planning.php" target="_blank">
-                    <button>Prendre un rendez-vous</button>
-                </a>
-                <a href="planning_solidaire.php" target="_blank">
-                    <button class="btn_solidaire">Prendre un rendez-vous</button>
-                </a>
-            </div>
-            <div class="card">
-                <h2>BATTERIRE</h2>
-                <img src="assets/image/batterie.jpg" alt="changement d'une batterie">
-                <a href="planning.php" target="_blank">
-                    <button>Prendre un rendez-vous</button>
-                </a>
-                <a href="planning_solidaire.php" target="_blank">
-                    <button class="btn_solidaire">Prendre un rendez-vous</button>
-                </a>
-            </div>
-            <div class="card">
-                <h2>ÉCLAIRAGE</h2>
-                <img src="assets/image/eclairage.jpg" alt="éclairage">
-                <a href="planning.php" target="_blank">
-                    <button>Prendre un rendez-vous</button>
-                </a>
-                <a href="planning_solidaire.php" target="_blank">
-                    <button class="btn_solidaire">Prendre un rendez-vous</button>
-                </a>
-            </div>
+            <?php foreach ($categories as $categorie): ?>
+                <div class="card">
+                    <h2><?= htmlspecialchars($categorie['nom_operations']) ?></h2>
+                    <img src="<?= htmlspecialchars($categorie['images']) ?>"
+                        alt="<?= htmlspecialchars($categorie['nom_operations']) ?>">
+                    <?php if (empty($_SESSION['id'])) { ?>
+                        <button class="connecsession">Prendre un rendez-vous</button>
+                    <?php } else { ?>
+                        <a href="/planning.php?id=<?= $categorie['Id_operations'] ?>&titre=<?= urlencode($categorie['nom_operations']) ?>&duree=<?= htmlspecialchars($categorie['duree']) ?>"
+                            target="_blank">
+                            <button>Prendre un rendez-vous </button>
+                        </a>
+                        <a href="/planning_solidaire.php?id=<?= $categorie['Id_operations'] ?>&titre=<?= urlencode($categorie['nom_operations']) ?>&duree=<?= htmlspecialchars($categorie['duree']) ?>"
+                            target="_blank">
+                            <button class="btn_solidaire">Prendre un rendez-vous solidaire</button>
+                        </a>
+                    <?php } ?>
+                </div>
+            <?php endforeach; ?>
         </section>
     </main>
     <?php include_once 'template/footer.php'; ?>

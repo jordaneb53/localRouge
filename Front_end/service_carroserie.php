@@ -1,6 +1,14 @@
 <?php
 session_start();
 
+
+require $_SERVER["DOCUMENT_ROOT"] . '/config/db.php';
+// Récupérer les catégories
+$sql = "SELECT * FROM operations WHERE service_mecanique = 1";
+$stmt = $conn->query($sql);
+$categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
 ?>
 
 
@@ -23,34 +31,22 @@ session_start();
         <?php include_once 'modal_inscription.php';
         include_once 'modal_connexion.php'; ?>
         <section class="cards-container">
-            <div class="card">
-                <h2>CARROSSERIE</h2>
-                <img src="assets/image/carroserie.jpg" alt="réparation en carrosserie sur véhicule automobile">
-                <a href="planning.php" target="_blank">
-                    <button>Prendre un rendez-vous pour un devis</button>
-                </a>
-            </div>
-            <div class="card">
-                <h2>RAYURES</h2>
-                <img src="assets/image/rayure.jpg" alt="Petite réparation sur un véhicule automobile">
-                <a href="planning.php" target="_blank">
-                    <button>Prendre un rendez-vous pour un devis</button>
-                </a>
-            </div>
-            <div class="card">
-                <h2>PEINTURES</h2>
-                <img src="assets/image/peinture.jpg" alt="Peintures automobile">
-                <a href="planning.php" target="_blank">
-                    <button>Prendre un rendez-vous pour un devis</button>
-                </a>
-            </div>
-            <div class="card">
-                <h2>JANTES</h2>
-                <img src="assets/image/jante.jpg" alt="Réparation jantes">
-                <a href="planning.php" target="_blank">
-                    <button>Prendre un rendez-vous pour un devis</button>
-                </a>
-            </div>
+            <?php foreach ($categories as $categorie): ?>
+                <div class="card">
+                    <h2><?= htmlspecialchars($categorie['nom_operations']) ?></h2>
+                    <img src="<?= htmlspecialchars($categorie['images']) ?>"
+                        alt="<?= htmlspecialchars($categorie['nom_operations']) ?>">
+                    <?php if (empty($_SESSION['id'])) { ?>
+                        <button class="connecsession">Prendre un rendez-vous</button>
+                    <?php } else { ?>
+                        <a href="/planning.php?id=<?= $categorie['Id_operations'] ?>&titre=<?= urlencode($categorie['nom_operations']) ?>&duree=<?= htmlspecialchars($categorie['duree']) ?>"
+                            target="_blank">
+                            <button>Prendre un rendez-vous </button>
+                        </a>
+
+                    <?php } ?>
+                </div>
+            <?php endforeach; ?>
         </section>
     </main>
     <?php include_once 'template/footer.php'; ?>

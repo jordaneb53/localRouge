@@ -1,6 +1,14 @@
 <?php
 session_start();
 
+
+require $_SERVER["DOCUMENT_ROOT"] . '/config/db.php';
+// Récupérer les catégories
+$sql = "SELECT * FROM operations WHERE service_mecanique = 1";
+$stmt = $conn->query($sql);
+$categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
 ?>
 
 <!DOCTYPE html>
@@ -19,53 +27,26 @@ session_start();
     <?php include_once 'template/header.php'; ?>
     <main>
         <section class="cards-container">
-            <div class="card">
-                <h2>CARROSSERIE</h2>
-                <img src="assets/image/carroserie.jpg" alt="réparation en carrosserie">
-                <a href="planning.php" target="_blank">
-                    <button>Prendre un rendez-vous</button>
-                </a>
-                <a href="planning_solidaire.php" target="_blank">
-                    <button class="btn_solidaire">Prendre un rendez-vous</button>
-                </a>
-            </div>
-            <div class="card">
-                <h2>RAYURES</h2>
-                <img src="assets/image/rayure.jpg" alt="Petite réparation">
-                <a href="planning.php" target="_blank">
-                    <button>Prendre un rendez-vous</button>
-                </a>
-                <a href="planning_solidaire.php" target="_blank">
-                    <button class="btn_solidaire">Prendre un rendez-vous</button>
-                </a>
-            </div>
-            <div class="card">
-                <h2>PEINTURES</h2>
-                <img src="assets/image/peinture.jpg" alt="Peintures">
-                <a href="planning.php" target="_blank">
-                    <button>Prendre un rendez-vous</button>
-                </a>
-                <a href="planning_solidaire.php" target="_blank">
-                    <button class="btn_solidaire">Prendre un rendez-vous</button>
-                </a>
-            </div>
-            <div class="card">
-                <h2>JANTES</h2>
-                <img src="assets/image/jante.jpg" alt="Réparation jantes">
-                <h3>Voir les produits</h3>
-                <label for="selection" class="block mt-3 font-medium">Choisissez une option :</label>
-                <select id="selection" class="w-full mt-1 p-2 border rounded-lg">
-                    <option>Option 1</option>
-                    <option>Option 2</option>
-                    <option>Option 3</option>
-                </select>
-                <a href="planning.php" target="_blank">
-                    <button>Prendre un rendez-vous</button>
-                </a>
-                <a href="planning_solidaire.php" target="_blank">
-                    <button class="btn_solidaire">Prendre un rendez-vous</button>
-                </a>
-            </div>
+            <?php foreach ($categories as $categorie): ?>
+                <div class="card">
+                    <h2><?= htmlspecialchars($categorie['nom_operations']) ?></h2>
+                    <img src="<?= htmlspecialchars($categorie['images']) ?>"
+                        alt="<?= htmlspecialchars($categorie['nom_operations']) ?>">
+                    <?php if (empty($_SESSION['id'])) { ?>
+                        <button class="connecsession">Prendre un rendez-vous</button>
+                    <?php } else { ?>
+                        <a href="/planning.php?id=<?= $categorie['Id_operations'] ?>&titre=<?= urlencode($categorie['nom_operations']) ?>&duree=<?= htmlspecialchars($categorie['duree']) ?>"
+                            target="_blank">
+                            <button>Prendre un rendez-vous </button>
+                        </a>
+                        <a href="/planning_solidaire.php?id=<?= $categorie['Id_operations'] ?>&titre=<?= urlencode($categorie['nom_operations']) ?>&duree=<?= htmlspecialchars($categorie['duree']) ?>"
+                            target="_blank">
+                            <button class="btn_solidaire">Prendre un rendez-vous solidaire</button>
+                        </a>
+                    <?php } ?>
+                </div>
+            <?php endforeach; ?>
+        </section>
     </main>
     <?php include_once 'template/footer.php'; ?>
 </body>

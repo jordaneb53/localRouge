@@ -964,6 +964,33 @@ tr:hover {
     text-align: left;
 }
 
+.toogleMdpProfil {
+    position: relative;
+    top: 90%;
+    left: 857px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: black;
+}
+
+.toogleNouveauMdpProfil {
+    position: absolute;
+    top: 182%;
+    left: 857px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: black;
+}
+
+.toogleConfirmeMdpProfil {
+    position: absolute;
+    top: 202%;
+    left: 857px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: black;
+}
+
 .toggle-password_modifMdp {
     position: absolute;
     top: 50%;
@@ -1392,6 +1419,11 @@ input:focus {
     color: #fff;
 }
 
+
+#currentWeekSolidaire {
+    color: #fff;
+}
+
 .rdv {
     text-align: center;
     margin: 0 auto;
@@ -1534,6 +1566,18 @@ button:hover {
     background-color: darkred;
 }
 
+.checkboxSolidaire {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    /* espace entre la case et le texte */
+}
+
+.checkboxSolidaire label {
+    margin: 0;
+    /* évite les marges par défaut */
+}
+
 .checkbox-container {
     text-align: left;
     margin-bottom: 10px;
@@ -1558,6 +1602,26 @@ button:hover {
     background-color: darkred;
 }
 
+.validationEntete {
+    color: white;
+    text-shadow: 2px 2px 2px #EC221F;
+    -webkit-text-stroke: 0.5px #EC221F;
+    font-size: 50px;
+    text-align: center;
+}
+
+.validationContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    padding: 20px;
+    box-sizing: border-box;
+    color: #fff;
+    border: 2px solid #EC221F;
+    /* Inclut le padding dans la taille totale */
+}
 
 /* Style de la modale */
 
@@ -1700,14 +1764,15 @@ button:hover {
     display: flex;
     justify-content: space-between;
     gap: 20px;
+    background-color: #af4c4c;
 }
 
-.form-section {
+div.form-section {
     width: 48%;
     border: 1px solid #ccc;
     padding: 20px;
     border-radius: 8px;
-    background-color: #f9f9f9;
+    background-color: #f6f0f0;
 }
 
 .form-section input {
@@ -1754,7 +1819,80 @@ div.usersMobile {
     display: none;
 }
 
-/* À mettre dans ton fichier assets/CSS/generique.css */
+.modalVehicule {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modal-content-vehicule {
+    background-color: #fff;
+    margin: auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 500px;
+    position: relative;
+    text-align: center;
+}
+
+.modal-content-vehicule img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+}
+
+.closeVehicule {
+    color: #EC221F;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 36px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Conteneur d'image avec les flèches de navigation */
+.modal-image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.modal-image-container button {
+    background: transparent;
+    border: none;
+    font-size: 2em;
+    color: #888;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+}
+
+.modal-image-container .prev {
+    left: 10px;
+}
+
+.modal-image-container .next {
+    right: 10px;
+}
+
+.modal-image-container img {
+    width: 80%;
+    max-width: 600px;
+    height: auto;
+    transition: all 0.3s ease-in-out;
+}
 
 .modal {
     display: none;

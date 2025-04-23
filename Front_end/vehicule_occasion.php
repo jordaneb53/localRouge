@@ -1,6 +1,9 @@
 <?php
 session_start();
-
+require $_SERVER["DOCUMENT_ROOT"] . '/config/db.php';
+$stmt = $conn->prepare("SELECT * FROM vehicules_occasions WHERE date_vente IS NULL");
+$stmt->execute();
+$vehicules = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -40,76 +43,53 @@ session_start();
             </div>
         </div>
 
+
         <section class="cards-container">
-            <div class="card">
-                <img src="assets/image/abt-audi-rs6-r.png" alt="RS6 ABT">
-                <h3>Audi RS6-ABT</h3>
-                <span>Kilométrage: 15000 km</span>
-                <span>Prix: 123000 €</span>
-                <button>Voir le détail</button>
+            <?php foreach ($vehicules as $v):
+                $photos = array_filter(explode(',', $v['photo']));
+                $photoPrincipale = trim($photos[0]);
+                $dataImages = htmlspecialchars(implode(',', $photos));
+                ?>
+                <div class="card" data-km="<?= $v['kilometrage_occasion'] ?>" data-prix="<?= $v['prix'] ?>">
+                    <img src="<?= htmlspecialchars($photoPrincipale) ?>" alt="<?= htmlspecialchars($v['description']) ?>">
+                    <h3><?= htmlspecialchars($v['marque_occasion']) . ' ' . htmlspecialchars($v['model_occasion']) ?></h3>
+                    <p><?= htmlspecialchars($v['description']) ?></p>
+
+                    <button class="btn-detail btn-open-modal" data-img="<?= htmlspecialchars($photoPrincipale) ?>"
+                        data-images="<?= $dataImages ?>" data-marque="<?= htmlspecialchars($v['marque_occasion']) ?>"
+                        data-model="<?= htmlspecialchars($v['model_occasion']) ?>"
+                        data-titre="<?= htmlspecialchars($v['description']) ?>"
+                        data-km="<?= number_format($v['kilometrage_occasion'], 0, ',', ' ') ?> km"
+                        data-prix="<?= number_format($v['prix'], 0, ',', ' ') ?> €"
+                        data-historique="<?= htmlspecialchars($v['historique']) ?>"
+                        data-etat="<?= htmlspecialchars($v['etat']) ?>"
+                        data-date="<?= htmlspecialchars($v['date_achat']) ?>">
+                        Voir le détail
+                    </button>
+                </div>
+
+            <?php endforeach; ?>
+        </section>
+
+        <!-- Modal -->
+        <div id="modalVehicule" class="modalVehicule">
+            <div class="modal-content">
+                <span class="closeVehicule">&times;</span>
+                <!-- Ajouter un conteneur pour les images et les flèches de navigation -->
+                <div class="modal-image-container">
+                    <button class="prev" id="prevImage">&lt;</button>
+                    <img id="modal-img" src="" alt="Image du véhicule">
+                    <button class="next" id="nextImage">&gt;</button>
+                </div>
+                <h3 id="modal-marque-model"></h3>
+                <p id="modal-description"></p>
+                <p id="modal-km"></p>
+                <p id="modal-prix"></p>
+                <p id="modal-historique"></p>
+                <p id="modal-etat"></p>
+                <p id="modal-date"></p>
             </div>
-            <div class="card">
-                <img src="assets/image/MANHART-Golf-GTI-290-Website-1.png" alt="GTI MANHART">
-                <h3>Golf GTI-MANHART</h3>
-                <span>Kilométrage: 23000 km</span>
-                <span>Prix: 59000 €</span>
-                <button>Voir le détail</button>
-            </div>
-            <div class="card">
-                <img src="assets/image/range-rover-evoque-assurance.jpg" alt="Range rover sport svr5.0">
-                <h3>Range Rover Sport</h3>
-                <span>Kilométrage: 42000 km</span>
-                <span>Prix: 97000€</span>
-                <button>Voir le détail</button>
-            </div>
-            <div class="card">
-                <img src="assets/image/S0-renault-arkana-2023-petite-mise-a-jour-et-finition-esprit-alpine-203316.png"
-                    alt="RS6 ABT">
-                <h3>Renault ARKANA E-TECH</h3>
-                <span>Kilométrage: 64000 km</span>
-                <span>Prix: 19000 €</span>
-                <button>Voir le détail</button>
-            </div>
-            <div class="card">
-                <img src="assets/image/exter-peugeot-308-0905js-2131-redimensionner.png" alt="RS6 ABT">
-                <h3>Peugeot 308</h3>
-                <span>Kilométrage: 86000km</span>
-                <span>Prix: 14500 €</span>
-                <button>Voir le détail</button>
-            </div>
-            <div class="card">
-                <img src="assets/image/abt-audi-rs6-r.png" alt="RS6 ABT">
-                <h3>Audi RS6-ABT</h3>
-                <span>Kilométrage: 15000 km</span>
-                <span>Prix: 123000 €</span>
-                <button>Voir le détail</button>
-            </div>
-            <div class="card">
-                <img src="assets/image/abt-audi-rs6-r.png" alt="RS6 ABT">
-                <h3>Audi RS6-ABT</h3>
-                <span>Kilométrage: 15000 km</span>
-                <span>Prix: 123000 €</span>
-                <button>Voir le détail</button>
-            </div>
-            <div class="card">
-                <img src="assets/image/abt-audi-rs6-r.png" alt="RS6 ABT">
-                <h3>Audi RS6-ABT</h3>
-                <span>Kilométrage: 15000 km</span>
-                <span>Prix: 123000 €</span>
-                <button>Voir le détail</button>
-            </div>
-            <div class="card">
-                <img src="assets/image/abt-audi-rs6-r.png" alt="RS6 ABT">
-                <h3>Audi RS6-ABT</h3>
-                <span>Kilométrage: 15000 km</span>
-                <span>Prix: 123000 €</span>
-                <button>Voir le détail</button>
-            </div>
-            <div class="pagination">
-                <button class="page-btn" onclick="changePage(-1)" id="prev-btn">Précédent</button>
-                <div id="page-buttons"></div>
-                <button class="page-btn" onclick="changePage(1)" id="next-btn">Suivant</button>
-            </div>
+        </div>
 
     </main>
     <?php include("template/footer.php"); ?>

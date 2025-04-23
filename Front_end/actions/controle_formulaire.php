@@ -129,11 +129,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bindParam(':confirmation', $confirmation);
 
         if ($stmt->execute()) {
-            // Redirection vers la page de confirmation d'inscription ou autre action approprie ici
+            $utilisateur_id = $conn->lastInsertId();
+
+            if ($utilisateur_id == 0) {
+                throw new Exception("Erreur : ID utilisateur est 0 après insertion.");
+            }
+
+
+            // Définir le rôle en fonction de garage_solidaire
+            $role_id = $garage_solidaire ? 4 : 3; // 1 = client_solidaire, 0 = client_fidel
+            echo "ID nouvel utilisateur : " . $utilisateur_id;
+            // Insérer dans la table pivot role_utilisateurs
+            $stmtRole = $conn->prepare("INSERT INTO role_utilisateurs (Id_utilisateurs, Id_role) VALUES (:Id_utilisateurs, :Id_role)");
+            $stmtRole->bindParam(':Id_utilisateurs', $utilisateur_id);
+            $stmtRole->bindParam(':Id_role', $role_id);
+
+
+            $stmtRole->execute();
+
+            // Redirection
             header("Location: /actions/validation_inscription.php?token=$token");
             exit();
         } else {
-            echo "Une erreur est survenue lors de l'inscription. Veuillez réessayer.";
+            echo "❌ Échec de l'insertion dans la table utilisateurs<br>";
+            print_r($stmt->errorInfo()); // affiche le message d'erreur SQL exact
+            return;
         }
 
     } catch (PDOException $e) {

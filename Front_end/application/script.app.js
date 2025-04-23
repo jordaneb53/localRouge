@@ -65,15 +65,119 @@ document.addEventListener('DOMContentLoaded', function () {
                 section.classList.remove('active');
             });
 
-            // Afficher la section correspondante
-            const targetSection = document.getElementById(item.getAttribute('data-section'));
+            const sectionId = item.getAttribute('data-section');
+            const targetSection = document.getElementById(sectionId);
+
             if (targetSection) {
                 targetSection.classList.add('active');
+
+                // Pour la section "clients", afficher les données
+                if (sectionId === 'clients') {
+                    // Charge le contenu PHP de la section
+                    fetch('/application/' + sectionId + '.php')
+                        .then(response => {
+                            if (!response.ok) throw new Error('Erreur réseau');
+                            return response.text();
+                        })
+                        .then(html => {
+                            targetSection.innerHTML = html; // Affiche le contenu PHP dans la section
+
+                            // Appelle afficherTableauClients après le chargement du contenu
+                            afficherTableauClients(); // Appel de la fonction pour afficher la table
+                        })
+                        .catch(error => {
+                            targetSection.innerHTML = `<p>Erreur de chargement de ${sectionId}.php</p>`;
+                            console.error(`Erreur lors du chargement de ${sectionId}.php:`, error);
+                        });
+                }
             }
         });
     });
 });
 
+// Fonction pour afficher la table des clients
+function afficherTableauClients() {
+    const wrapper = document.getElementById("wrapper");
 
+    // Vérifie si l'élément #wrapper existe
+    if (wrapper) {
+        fetch('/application/clients_data.php')
+            .then(response => response.json())
+            .then(utilisateurs => {
+                new gridjs.Grid({
+                    columns: ["Nom", "Prénom", "Adresse", "Email", "Action"],
+                    data: utilisateurs.map(user => [
+                        user.nom_utilisateurs,
+                        user.prenom_utilisateurs,
+                        user.adresse_utilisateurs,
+                        user.email_utilisateurs,
+                        gridjs.html(`
+                            <button class="btn-modifier" data-id="${user.Id_utilisateurs}">Modifier</button>
+                            <button onclick="if(confirm('Supprimer ?')) window.location.href='supprimer.php?id=${user.Id_utilisateurs}'">Supprimer</button>
+                        `)
+                    ]),
+                    pagination: {
+                        limit: 10,
+                        showing: false,
+                    },
+                    search: true,
+                    sort: true,
+                    language: {
+                        'search': {
+                            'placeholder': 'Rechercher...'
+                        },
+                        'pagination': {
+                            'previous': 'Précédent',
+                            'next': 'Suivant',
+                            'showing': 'Affichage de',
+                            'results': 'résultats'
+                        },
+                        'sort': {
+                            'asc': 'Tri croissant',
+                            'desc': 'Tri décroissant'
+                        }
+                    }
+                }).render(wrapper);
+            })
+            .catch(error => {
+                console.error("Erreur lors du chargement des utilisateurs :", error);
+            });
+    } else {
+        console.error("L'élément #wrapper n'a pas été trouvé dans le DOM");
+    }
+}
+// OUVERTURE de la modale
+document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('btn-modifier')) {
+        const userId = e.target.getAttribute('data-id');
 
+        const modal = document.getElementById('modal-client');
+        const modalBody = document.getElementById('modal-body-clients');
+
+        // Affiche la modale
+        modal.style.display = 'flex';
+        modal.classList.add('show');
+
+        // Charge dynamiquement le formulaire
+        fetch(`/application/modifier_clients.php?id=${userId}`)
+            .then(response => response.text())
+            .then(html => {
+                modalBody.innerHTML = html;
+            })
+            .catch(error => {
+                modalBody.innerHTML = "<p>Erreur lors du chargement du formulaire.</p>";
+                console.error(error);
+            });
+    }
+});
+
+// FERMETURE de la modale
+document.addEventListener('click', function (e) {
+    if (
+        e.target.classList.contains('close-clients') ||
+        e.target.classList.contains('modal-clients')
+    ) {
+        document.getElementById('modal-client').style.display = 'none';
+    }
+});
 

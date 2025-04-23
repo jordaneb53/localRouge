@@ -64,8 +64,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['valider_inscription']
 }
 ?>
 
-
-
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -81,29 +79,30 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['valider_inscription']
 </head>
 
 <body>
-    <h1>Validation d'inscription</h1>
+    <h1 class>Validation d'inscription</h1>
+    <div class="validationContainer">
 
-    <?php if ($nom && $prenom && $_SERVER["REQUEST_METHOD"] !== "POST"): ?>
-        <h3>Madame/Monsieur <?php echo $nom . " " . $prenom; ?></h3>
-        <p>Merci pour votre inscription à MNS GARAGE. Pour finaliser, cliquez sur le bouton ci-dessous.</p>
-        <form method="post" action="">
-            <input type="hidden" name="token" value="<?php echo htmlspecialchars($token); ?>">
-            <button type="submit" name="valider_inscription">Valider mon inscription</button>
-        </form>
+        <?php if ($nom && $prenom && $_SERVER["REQUEST_METHOD"] !== "POST"): ?>
+            <h3>Bienvenue <?php echo $nom . " " . $prenom; ?></h3>
+            <p>Merci pour votre inscription à MNS GARAGE. Pour finaliser, cliquez sur le bouton ci-dessous.</p>
+            <form method="post" action="">
+                <input type="hidden" name="token" value="<?php echo htmlspecialchars($token); ?>">
+                <button type="submit" name="valider_inscription">Valider mon inscription</button>
+            </form>
 
-    <?php elseif ($nom && $prenom && $_SERVER["REQUEST_METHOD"] === "POST"): ?>
-        <h3>Madame/Monsieur <?php echo $nom . " " . $prenom; ?></h3>
-        <p>Votre compte a bien été validé !</p>
-        <a href="../index.php"><button>Retour à l'accueil</button></a>
+        <?php elseif ($nom && $prenom && $_SERVER["REQUEST_METHOD"] === "POST"): ?>
+            <h3>Bienvenue <?php echo $nom . " " . $prenom; ?></h3>
+            <p>Votre compte a bien été validé !</p>
+            <a href="../index.php"><button>Retour à l'accueil</button></a>
 
-    <?php else: ?>
-        <p><?php echo $message; ?></p>
-        <a href="../modal_inscription.php"><button>Recommencer l'inscription</button></a>
-    <?php endif; ?>
+        <?php else: ?>
+            <p><?php echo $message; ?></p>
+            <a href="../modal_inscription.php"><button>Recommencer l'inscription</button></a>
+        <?php endif; ?>
 
-
-    <p>La direction MNS GARAGE</p>
-    <p>&copy; 2025</p>
+        <p>La direction MNS GARAGE</p>
+        <p>&copy; 2025</p>
+    </div>
 </body>
 
 </html>

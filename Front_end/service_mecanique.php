@@ -2,28 +2,13 @@
 session_start();
 
 
-// Paramètres de connexion
-$host = 'localhost'; // Vérifie si c'est bien localhost ou une autre adresse
-$dbname = 'mnsgarage'; // Nom de ta base de données
-$username = 'root'; // Nom d'utilisateur (par défaut sur WAMP)
-$password = ''; // Mot de passe (vide par défaut sur WAMP)
-
-try {
-    // Connexion à la base de données avec PDO
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-    // Activer les erreurs PDO
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    // Afficher un message d'erreur et stopper l'exécution du script
-    die("Erreur de connexion à la base de données : " . $e->getMessage());
-}
-
+require $_SERVER["DOCUMENT_ROOT"] . '/config/db.php';
 // Récupérer les catégories
-$sql = "SELECT * FROM categories";
-$stmt = $pdo->query($sql);
+$sql = "SELECT * FROM operations WHERE service_mecanique = 0";
+$stmt = $conn->query($sql);
 $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$testeRecup = "ok";
+
 ?>
 
 
@@ -49,13 +34,13 @@ $testeRecup = "ok";
         <section class="cards-container">
             <?php foreach ($categories as $categorie): ?>
                 <div class="card">
-                    <h2><?= htmlspecialchars($categorie['titre']) ?></h2>
+                    <h2><?= htmlspecialchars($categorie['nom_operations']) ?></h2>
                     <img src="<?= htmlspecialchars($categorie['images']) ?>"
-                        alt="<?= htmlspecialchars($categorie['titre']) ?>">
+                        alt="<?= htmlspecialchars($categorie['nom_operations']) ?>">
                     <?php if (empty($_SESSION['id'])) { ?>
                         <button class="connecsession">Prendre un rendez-vous</button>
                     <?php } else { ?>
-                        <a href="/planning.php?id=<?= $categorie['Id_categories'] ?>&titre=<?= urlencode($categorie['titre']) ?>&duree=<?= htmlspecialchars($categorie['duree']) ?>"
+                        <a href="/planning.php?id=<?= $categorie['Id_operations'] ?>&titre=<?= urlencode($categorie['nom_operations']) ?>&duree=<?= htmlspecialchars($categorie['duree']) ?>"
                             target="_blank">
                             <button>Prendre un rendez-vous </button>
                         </a>

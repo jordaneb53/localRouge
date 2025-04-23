@@ -194,3 +194,80 @@ li:hover .sousMenu {
     font-weight: bold;
     text-shadow: 2px 2px 2px #EC221F;
 }
+
+.modal-clients {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 30px 20px 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+    transform: scale(0.95);
+    opacity: 0;
+    transition: all 0.2s ease;
+}
+
+.modal-clients.show .modal-content {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.modal-content .close-clients {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #EC221F;
+    cursor: pointer;
+}
+
+.modal-content .close-clients:hover {
+    color: #c3120f;
+}
+
+.modal-content label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border-radius: 15px;
+    border: 1px solid #EC221F;
+    background-color: #e7e5e5;
+}
+
+.modal-content button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #EC221F;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.modal-content button[type="submit"]:hover {
+    background-color: #c3120f;
+}

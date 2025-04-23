@@ -29,7 +29,11 @@ if (isset($_GET['id']) && isset($_GET['titre'])) {
     <?php include('template/header.php'); ?>
     <main>
         <div class="rdv">
-            <h1 data-duree="<?php echo htmlspecialchars($_GET['duree']); ?>">Prendre votre rendez-vous</h1>
+            <h1 data-duree="<?php echo htmlspecialchars($_GET['duree']); ?>"
+                data-titre="<?php echo htmlspecialchars($titre); ?>">
+                Prendre votre rendez-vous
+            </h1>
+
             <p>Assurez-vous que votre jour et heure soit disponible !</p>
         </div>
         <div class="calendar">

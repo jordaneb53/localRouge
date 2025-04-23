@@ -28,4 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("toggleConfirmPasswordInscription")?.addEventListener("click", function () {
         togglePassword("confirme_mot_de_passe");
     });
+    document.getElementById("togglePasswordModal")?.addEventListener("click", function () {
+        togglePassword("mot_de_passe");
+    });
 });
