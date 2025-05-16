@@ -2,46 +2,11 @@
 function updateValue(id, value) {
     document.getElementById(id).textContent = value;
 }
-// Écoute les changements de sliders
-document.addEventListener("DOMContentLoaded", () => {
-    const kmSlider = document.getElementById("kilometrage");
-    const prixSlider = document.getElementById("prix");
 
-    const cards = document.querySelectorAll(".card");
-
-    function filterCards() {
-        const maxKm = parseInt(kmSlider.value, 10);
-        const maxPrix = parseInt(prixSlider.value, 10);
-
-        cards.forEach(card => {
-            const cardKm = parseInt(card.getAttribute("data-km"), 10);
-            const cardPrix = parseInt(card.getAttribute("data-prix"), 10);
-
-            if (cardKm <= maxKm && cardPrix <= maxPrix) {
-                card.style.visibility = "visible";
-                card.style.position = "static";
-                card.style.pointerEvents = "auto";
-            } else {
-                card.style.visibility = "hidden";
-                card.style.position = "absolute";
-                card.style.pointerEvents = "none";
-            }
-        });
-    }
-
-    kmSlider.addEventListener("input", filterCards);
-    prixSlider.addEventListener("input", filterCards);
-
-    // // Appliquer les filtres au chargement initial
-    // filterCards();
-});
-
-// Burger menu ouvrir et ferme le menu 
-
+// Burger menu
 document.getElementById('iconBurger')?.addEventListener('click', function () {
     document.querySelector('.burgerMenu')?.classList.add('active')
 })
-
 document.querySelector('.fermerBurger')?.addEventListener('click', function () {
     document.querySelector('.burgerMenu')?.classList.remove('active')
 })
@@ -274,8 +239,8 @@ function connect(event) {
     }
 
 }
-document.getElementById('loginForm')?.addEventListener('submit', connect);
-document.getElementById('btnLogin')?.addEventListener('click', connect);
+document.getElementById('loginForm').addEventListener('submit', connect);
+document.getElementById('btnLogin').addEventListener('click', connect);
 
 // Récupère les paramètres 'id' et 'titre' dans l'URL
 const urlParams = new URLSearchParams(window.location.search);
@@ -283,135 +248,13 @@ const id = urlParams.get('id');
 const titre = urlParams.get('titre');
 const duree = urlParams.get('dure');
 
-// Vérifie si les valeurs existent et les stocke dans sessionStorage
-if (id && titre) {
-    sessionStorage.setItem('idCategorie', id);
-    sessionStorage.setItem('titreCategorie', titre);
-} else {
-    console.error("Les paramètres 'id' et 'titre' sont manquants dans l'URL.");
-}
 
-document.addEventListener("DOMContentLoaded", () => {
-    // Récupérer la modale et les éléments nécessaires
-    let modalVehicule = document.getElementById("modalVehicule");
-    const detailButtons = document.querySelectorAll(".btn-open-modal");
-    const modalImg = document.getElementById("modal-img");
-    const modalTitre = document.getElementById("modal-marque-model");
-    const modalDescription = document.getElementById("modal-description");
-    const modalKm = document.getElementById("modal-km");
-    const modalPrix = document.getElementById("modal-prix");
-    const modalHistorique = document.getElementById("modal-historique");
-    const modalEtat = document.getElementById("modal-etat");
-    const modalDate = document.getElementById("modal-date");
-    const closeBtn = document.querySelector(".closeVehicule");
-    const prevBtn = document.getElementById("prevImage");
-    const nextBtn = document.getElementById("nextImage");
-
-    // Créer un tableau pour les images
-    let images = [];
-    let currentIndex = 0;
-
-    // Vérifier que la modale et les boutons existent
-    if (modalVehicule && closeBtn) {
-        // Ajouter les événements aux boutons "Voir le détail"
-        detailButtons.forEach(btn => {
-            btn.addEventListener("click", () => {
-                const marque = btn.getAttribute("data-marque");
-                const model = btn.getAttribute("data-model");
-
-                // Récupérer les images depuis l'attribut data-images (séparées par une virgule)
-                const imagesData = btn.getAttribute("data-images").split(","); // Diviser la chaîne en tableau
-
-                // Mettre à jour les informations dans la modale
-                images = imagesData; // Stocker les images dans le tableau
-                currentIndex = 0; // Réinitialiser l'index à 0 (la première image)
-                modalImg.src = images[currentIndex]; // Afficher la première image
-                modalTitre.textContent = `${marque} ${model}`;
-                modalDescription.textContent = btn.getAttribute("data-titre");
-                modalKm.textContent = `Kilométrage : ${btn.getAttribute("data-km")}`;
-                modalPrix.textContent = `Prix : ${btn.getAttribute("data-prix")}`;
-                modalHistorique.textContent = `Historique : ${btn.getAttribute("data-historique")}`;
-                modalEtat.textContent = `État : ${btn.getAttribute("data-etat")}`;
-                modalDate.textContent = btn.getAttribute("data-date")
-                    ? `Date d'achat : ${btn.getAttribute("data-date")}`
-                    : '';
-
-                // Afficher la modale
-                modalVehicule.style.display = "block";
-            });
-        });
-
-        // Fermer la modale quand on clique sur le bouton de fermeture
-        closeBtn.addEventListener("click", () => {
-            modalVehicule.style.display = "none";
-        });
-
-        // Fermer la modale si on clique à l'extérieur de celle-ci
-        window.addEventListener("click", (e) => {
-            if (e.target == modalVehicule) {
-                modalVehicule.style.display = "none";
-            }
-        });
-
-        // Gérer la navigation des images avec les flèches
-        prevBtn.addEventListener("click", () => {
-            if (currentIndex > 0) {
-                currentIndex--;
-                modalImg.src = images[currentIndex];
-            }
-        });
-
-        nextBtn.addEventListener("click", () => {
-            if (currentIndex < images.length - 1) {
-                currentIndex++;
-                modalImg.src = images[currentIndex];
-            }
-        });
-    }
-});
 document.addEventListener("DOMContentLoaded", () => {
     const marqueSelect = document.getElementById("marqueSelect");
     const modeleSelect = document.getElementById("modeleSelect");
-    const motorisationSelect = document.getElementById("motorisationSelect");
     const openModalButton = document.getElementById("openModalVehicule");
     const modalVehicule = document.getElementById("modalVehicule");
     const closeBtn = document.querySelector(".closeVehicule");
-
-    // Charger dynamiquement les marques au chargement
-    fetch('actions/ajax/get_marques.php')
-        .then(response => response.json())
-        .then(data => {
-            marqueSelect.innerHTML = '<option value="">Sélectionnez une marque</option>';
-            data.forEach(marque => {
-                let option = document.createElement('option');
-                option.value = marque.id_marques;  // Utilisation de l'ID de la marque
-                option.textContent = marque.nom_marques;
-                marqueSelect.appendChild(option);
-            });
-        })
-        .catch(error => {
-            console.error('Erreur lors de la récupération des marques :', error);
-        });
-
-    // Charger les modèles en fonction de la marque (utilisation de l'ID de la marque)
-    marqueSelect.addEventListener("change", () => {
-        const marqueId = marqueSelect.value;  // Utilisation de l'ID de la marque
-        if (marqueId) {
-            fetchModels(marqueId);  // Passer l'ID de la marque à la fonction
-        } else {
-            clearOptions(modeleSelect);
-            clearOptions(motorisationSelect);
-        }
-    });
-
-    // Charger les motorisations en fonction du modèle (utilisation des IDs)
-    modeleSelect.addEventListener("change", () => {
-        const modeleId = modeleSelect.value;
-        console.log("→ Envoi vers PHP id_modeles =", modeleId);
-        if (modeleId) fetchMotorisations(modeleId);
-    });
-
-
 
     // Gestion de la modale
     if (openModalButton) {
@@ -432,68 +275,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Fonction pour récupérer les modèles en fonction de l'ID de la marque
-    function fetchModels(marqueId) {
-        fetch('actions/ajax/get_modeles.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: `id_marques=${encodeURIComponent(marqueId)}`  // Passer l'ID de la marque
-        })
-            .then(response => response.json())
-            .then(models => {
-                clearOptions(modeleSelect);
-                if (models.length > 0) {
-                    models.forEach(model => {
-                        let option = document.createElement('option');
-                        option.value = model.id_modeles;  // Utilisation de l'ID du modèle
-                        option.textContent = model.nom_modele;
-                        modeleSelect.appendChild(option);
-                    });
-                } else {
-                    let option = document.createElement('option');
-                    option.textContent = "Aucun modèle trouvé";
-                    modeleSelect.appendChild(option);
-                }
-            })
-            .catch(error => {
-                console.error('Erreur lors de la récupération des modèles:', error);
-            });
-    }
-
-    // Fonction pour récupérer les motorisations en fonction de l'ID du modèle
-    function fetchMotorisations(modeleId) {
-        fetch('actions/ajax/get_motorisations.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: `id_modeles=${encodeURIComponent(modeleId)}`
-        })
-            .then(response => response.text())  // Utiliser .text() pour vérifier la réponse brute
-            .then(data => {
-                console.log("Réponse brute:", data);  // Afficher la réponse brute dans la console pour débogage
-                try {
-                    const motorisations = JSON.parse(data);  // Tenter de parser la réponse en JSON
-                    clearOptions(motorisationSelect);
-                    if (motorisations.length > 0) {
-                        motorisations.forEach(motorisation => {
-                            let option = document.createElement('option');
-                            option.value = motorisation.id_motorisation;  // Utilisation de l'ID de la motorisation
-                            option.textContent = motorisation.nom_motorisation;
-                            motorisationSelect.appendChild(option);
-                        });
-                    } else {
-                        let option = document.createElement('option');
-                        option.textContent = "Aucune motorisation trouvée";
-                        motorisationSelect.appendChild(option);
-                    }
-                } catch (error) {
-                    console.error('Erreur lors du parsing JSON:', error);  // Afficher l'erreur de parsing
-                }
-            })
-            .catch(error => {
-                console.error('Erreur lors de la récupération des motorisations:', error);
-            });
-    }
-
     // Fonction pour vider les options d'un select
     function clearOptions(select) {
         select.innerHTML = "";
@@ -503,3 +284,111 @@ document.addEventListener("DOMContentLoaded", () => {
         select.appendChild(option);
     }
 });
+document.addEventListener("DOMContentLoaded", function () {
+    const dateInputs = document.querySelectorAll('.date-input');
+
+    dateInputs.forEach(input => {
+        input.addEventListener('input', function () {
+            const date = new Date(this.value);
+            const day = date.getUTCDay(); // 0 = dimanche, 6 = samedi
+
+            if (day === 0 || day === 6) {
+                alert("Les week-ends ne sont pas disponibles pour les rendez-vous.");
+                this.value = '';
+            }
+        });
+    });
+});
+
+if (document.querySelector('.closebtncross')) {
+    document.querySelector('.closebtncross').addEventListener('click', () => {
+        document.getElementById('modalVehicule').style.display = 'none';
+    });
+}
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const modal = document.getElementById("modalRdv");
+    const closeModal = document.querySelector(".close");
+
+    // Ouvre la modal quand on clique sur un bouton "Prendre un rendez-vous"
+    document.querySelectorAll(".card").forEach(card => {
+        const button = card.querySelector("button:not(.connecsession)");
+        if (button) {
+            button.addEventListener("click", () => {
+                const idOperation = card.getAttribute("data-id-operation");
+                const nomOperation = card.querySelector("h2").textContent.trim();
+                const dateInput = document.getElementById(`date_reservation_${idOperation}`);
+                const timeInput = document.getElementById(`heure_reservation_${idOperation}`);
+                // const idvehicules = getElementById('Id_vehicule').getAttribute('value');
+                const date = dateInput.value;
+                const heure = timeInput.value;
+
+                if (!date || !heure) {
+                    alert("Veuillez sélectionner une date et une heure.");
+                    return;
+                }
+
+                // Champs visibles
+                document.getElementById("typeReparation").value = nomOperation;
+                document.getElementById("dateRdv").value = date;
+                document.getElementById("horaireRdv").value = heure;
+
+                // Champs cachés à qui seront  envoyer au backend
+                document.getElementById("Id_operations").value = idOperation;
+                document.getElementById("date_debut").value = date;
+                document.getElementById("heure_debut").value = heure;
+                // document.getElementById("Id_vehicule").value = idvehicules;
+
+                // Affiche la modale
+                document.getElementById("modalRdv").style.display = "block";
+            });
+        }
+    });
+
+
+    // Fermer la modal
+    if (closeModal) {
+        closeModal.addEventListener("click", () => {
+            modal.style.display = "none";
+        });
+    }
+
+
+    // Clic hors de la modal
+    window.addEventListener("click", e => {
+        if (e.target === modal) {
+            modal.style.display = "none";
+        }
+    });
+});
+const vehicule = document.body.dataset.vehicule;
+
+if (vehicule) {
+    document.getElementById("vehiculeClient").value = vehicule;
+}
+// Récupère les infos véhicule du client connecté
+fetch('actions/get_vehicule.php')
+    .then(response => {
+        if (!response.ok) throw new Error("Erreur HTTP : " + response.status);
+        return response.json();
+    })
+    .then(data => {
+        if (data.error) {
+            document.getElementById('vehiculeClient').value = data.error;
+            return;
+        }
+
+        let infosVehicule = `${data.marque_vehicules} ${data.modele_vehicules}`;
+        if (data.immatriculation) infosVehicule += ` - ${data.immatriculation}`;
+        if (data.annee) infosVehicule += ` (${data.annee})`;
+
+        document.getElementById('vehiculeClient').value = infosVehicule;
+    })
+    .catch(error => {
+        console.error("Erreur JS ou réseau :", error);
+        document.getElementById('vehiculeClient').value = "Erreur lors du chargement";
+    });
+
+
+

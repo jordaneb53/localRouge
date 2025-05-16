@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 include_once '../config/db.php';
 
@@ -22,13 +23,12 @@ $confirmeMdp = $_POST['Confirme_mdp_profil'];
 $garageSolidaire = isset($_POST['garage_solidaire']) ? 1 : 0;
 
 // Récupérer les données véhicule
-$marque = $_POST['marque'];
-$modele = $_POST['modele'];
+$idMarque = isset($_POST['Id_marques']) ? $_POST['Id_marques'] : null;
+$idModele = isset($_POST['Id_modeles']) ? $_POST['Id_modeles'] : null;
 $immatriculation = $_POST['immatriculation'];
 $annee = $_POST['annee'];
 $couleur = $_POST['couleur'];
 $kilometrage = $_POST['kilometrage'];
-$motorisation = $_POST['motorisation'];
 
 // Récupérer le mot de passe actuel
 $sql = "SELECT mot_de_passe_utilisateurs FROM utilisateurs WHERE Id_utilisateurs = :id";
@@ -40,21 +40,17 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 if (!$user) {
     die("Utilisateur non trouvé");
 }
+$changePassword = false;
 
-// Vérifier l'ancien mot de passe
-if (!password_verify($ancienMdp, $user['mot_de_passe_utilisateurs'])) {
-    die("Ancien mot de passe incorrect !");
+if (!empty($nouveauMdp) || !empty($confirmeMdp)) {
+    // Vérifier que les nouveaux mots de passe correspondent
+    if ($nouveauMdp !== $confirmeMdp) {
+        die("Les nouveaux mots de passe ne correspondent pas !");
+    }
+    $changePassword = true;
 }
 
-// Vérifier que les nouveaux mots de passe correspondent
-if ($nouveauMdp !== $confirmeMdp) {
-    die("Les nouveaux mots de passe ne correspondent pas !");
-}
-
-// Hacher le nouveau mot de passe
-$hashedPassword = password_hash($nouveauMdp, PASSWORD_DEFAULT);
-
-// Mettre à jour les infos utilisateur
+// Prépare la requête SQL de mise à jour
 $sql = "UPDATE utilisateurs 
         SET nom_utilisateurs = :nom,
             prenom_utilisateurs = :prenom,
@@ -62,9 +58,14 @@ $sql = "UPDATE utilisateurs
             code_postal = :code_postal,
             ville_utilisateurs = :ville,
             email_utilisateurs = :email,
-            mot_de_passe_utilisateurs = :newPassword,
-            garage_solidaire = :garageSolidaire
-        WHERE Id_utilisateurs = :id";
+            garage_solidaire = :garageSolidaire";
+
+if ($changePassword) {
+    $sql .= ", mot_de_passe_utilisateurs = :newPassword";
+}
+
+$sql .= " WHERE Id_utilisateurs = :id";
+
 $stmt = $conn->prepare($sql);
 $stmt->bindParam(':nom', $nom);
 $stmt->bindParam(':prenom', $prenom);
@@ -72,41 +73,51 @@ $stmt->bindParam(':adresse', $adresse);
 $stmt->bindParam(':code_postal', $code_postal);
 $stmt->bindParam(':ville', $ville);
 $stmt->bindParam(':email', $email);
-$stmt->bindParam(':newPassword', $hashedPassword);
 $stmt->bindParam(':garageSolidaire', $garageSolidaire, PDO::PARAM_INT);
 $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
+if ($changePassword) {
+    $hashedPassword = password_hash($nouveauMdp, PASSWORD_DEFAULT);
+    $stmt->bindParam(':newPassword', $hashedPassword);
+}
+
 $stmt->execute();
 
-// Mettre à jour le véhicule (il faut d’abord trouver l’ID du véhicule lié à l’utilisateur)
-$sql = "SELECT Id_vehicule FROM utilisateurs_vehicules WHERE Id_utilisateurs = :id";
+// Mettre à jour le véhicule (trouver l’ID du véhicule lié à l’utilisateur)
+$sql = "SELECT Id_vehicule FROM vehicules WHERE Id_utilisateurs = :id";
 $stmt = $conn->prepare($sql);
 $stmt->bindParam(':id', $id, PDO::PARAM_INT);
 $stmt->execute();
 $vehicule = $stmt->fetch(PDO::FETCH_ASSOC);
 
+
+
+if ($idMarque === null || $idModele === null) {
+    die("Les données de marque ou modèle sont manquantes.");
+}
+
 if ($vehicule) {
     $idVehicule = $vehicule['Id_vehicule'];
 
     $sql = "UPDATE vehicules 
-            SET marque_vehicules = :marque,
-                modele_vehicules = :modele,
-                immatriculation = :immatriculation,
-                annee = :annee,
-                couleur = :couleur,
-                kilometrage = :kilometrage,
-                motorisation = :motorisation
-            WHERE Id_vehicule = :idVehicule";
+    SET Id_marques = :idMarque,
+        Id_modeles = :idModele,
+        immatriculation = :immatriculation,
+        annee = :annee,
+        couleur = :couleur,
+        kilometrage = :kilometrage
+    WHERE Id_vehicule = :idVehicule";
     $stmt = $conn->prepare($sql);
-    $stmt->bindParam(':marque', $marque);
-    $stmt->bindParam(':modele', $modele);
+    $stmt->bindParam(':idMarque', $idMarque);
+    $stmt->bindParam(':idModele', $idModele);
     $stmt->bindParam(':immatriculation', $immatriculation);
     $stmt->bindParam(':annee', $annee);
     $stmt->bindParam(':couleur', $couleur);
     $stmt->bindParam(':kilometrage', $kilometrage);
-    $stmt->bindParam(':motorisation', $motorisation);
     $stmt->bindParam(':idVehicule', $idVehicule, PDO::PARAM_INT);
     $stmt->execute();
 }
+
 
 echo "Toutes les informations ont été mises à jour avec succès.";
 // Redirection possible : header('Location: profil.php');

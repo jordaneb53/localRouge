@@ -113,7 +113,7 @@ function afficherTableauClients() {
                         user.email_utilisateurs,
                         gridjs.html(`
                             <button class="btn-modifier" data-id="${user.Id_utilisateurs}">Modifier</button>
-                            <button onclick="if(confirm('Supprimer ?')) window.location.href='supprimer.php?id=${user.Id_utilisateurs}'">Supprimer</button>
+                            <button onclick="if(confirm('Supprimer ?')) window.location.href='supprimer_client.php?id=${user.Id_utilisateurs}'">Supprimer</button>
                         `)
                     ]),
                     pagination: {
@@ -180,4 +180,117 @@ document.addEventListener('click', function (e) {
         document.getElementById('modal-client').style.display = 'none';
     }
 });
+// Fonction pour récupérer et afficher les pièces
+function loadPieces() {
+    fetch('pieces.php')  // Remplace par le chemin vers ton fichier PHP
+        .then(response => response.json())
+        .then(data => {
+            console.log(data); // Vérifie la structure des données renvoyées par PHP
+            let piecesList = document.getElementById('piecesList');
+            piecesList.innerHTML = ''; // Efface les anciennes données avant d'ajouter les nouvelles
 
+            data.forEach(piece => {
+                let row = document.createElement('tr');
+
+                row.innerHTML = `
+                    <td>${piece.nom_pieces || 'Non défini'}</td>
+                    <td>${piece.marque_pieces || 'Non défini'}</td>
+                    <td>${piece.model_pieces || 'Non défini'}</td>
+                    <td>${piece.reference_pieces || 'Non défini'}</td>
+                    <td>${piece.nom_operations || 'Non défini'}</td> <!-- Afficher le nom de l'opération -->
+                    <td><button class="btn-modifierPiece" data-id="${piece.id_pieces}">Modifier</button><button class="btn-supprimerPiece" data-id="${piece.id_pieces}">Suprimer</button></td>
+                `;
+
+                piecesList.appendChild(row);
+            });
+        })
+        .catch(error => console.error('Erreur:', error));
+}
+
+// Charger les pièces lorsque la page est prête
+window.onload = loadPieces;
+// Fonction pour supprimer une pièce
+function supprimerPiece(id) {
+    fetch('supprimer_pieces.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: id }),
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("Pièce supprimée avec succès");
+                loadPieces(); // Recharger la liste après suppression
+            } else {
+                alert("Erreur lors de la suppression : " + data.message);
+            }
+        })
+        .catch(error => console.error('Erreur:', error));
+}
+
+// Fonction pour afficher les détails d'une pièce dans le formulaire
+function modifierPiece(id) {
+    fetch(`modifier_pieces.php?id=${id}`)
+        .then(response => response.json())
+        .then(piece => {
+            if (piece.success === false) {
+                alert(piece.message);
+                return;
+            }
+
+            // Remplir le formulaire avec les données de la pièce
+            document.getElementById('nom_pieces').value = piece.nom_pieces;
+            document.getElementById('marque_pieces').value = piece.marque_pieces;
+            document.getElementById('model_pieces').value = piece.model_pieces;
+            document.getElementById('reference_pieces').value = piece.reference_pieces;
+            document.getElementById('id_operations').value = piece.Id_operations;
+
+            // Afficher le formulaire de modification
+            document.getElementById('modifier-form').style.display = 'block';
+
+            // Soumettre le formulaire de modification
+            document.getElementById('edit-piece-form').onsubmit = function (event) {
+                event.preventDefault();
+
+                const formData = new FormData(event.target);
+
+                fetch('modifier_pieces.php', {
+                    method: 'POST',
+                    body: formData,
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert("Pièce mise à jour avec succès");
+                            loadPieces(); // Recharger la liste après modification
+                        } else {
+                            alert("Erreur lors de la mise à jour : " + data.message);
+                        }
+                    })
+                    .catch(error => console.error('Erreur:', error));
+            };
+        })
+        .catch(error => console.error('Erreur:', error));
+}
+
+// Ajouter des gestionnaires d'événements pour les boutons Modifier et Supprimer
+document.addEventListener('DOMContentLoaded', () => {
+    loadPieces(); // Charger les pièces au démarrage
+
+    document.body.addEventListener('click', (event) => {
+        if (event.target.classList.contains('btn-modifierPiece')) {
+            const id = event.target.getAttribute('data-id');
+            modifierPiece(id);
+        }
+
+        if (event.target.classList.contains('btn-supprimerPiece')) {
+            const id = event.target.getAttribute('data-id');
+            const confirmation = confirm("Êtes-vous sûr de vouloir supprimer cette pièce ?");
+            if (confirmation) {
+                supprimerPiece(id);
+            }
+        }
+    });
+});

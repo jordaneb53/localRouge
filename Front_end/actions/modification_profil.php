@@ -38,6 +38,19 @@ $vehicule = $stmt->fetch(PDO::FETCH_ASSOC);
 if (!$vehicule) {
     die("Véhicule introuvable !");
 }
+
+// Récupérer toutes les marques
+$sql = "SELECT Id_marques, nom_marques FROM marques ORDER BY nom_marques";
+$stmt = $conn->prepare($sql);
+$stmt->execute();
+$marques = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Récupérer tous les modèles
+$sql = "SELECT Id_modeles, nom_modele FROM modeles ORDER BY nom_modele";
+$stmt = $conn->prepare($sql);
+$stmt->execute();
+$modeles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 
 <!DOCTYPE html>
@@ -125,10 +138,23 @@ if (!$vehicule) {
         <div class="form-section">
             <h3>Informations sur le véhicule</h3>
             <label>Marque :</label>
-            <input type="text" name="marque" value="<?= htmlspecialchars($vehicule['nom_marques']) ?>" required><br>
+            <select name="Id_marques" required>
+                <?php foreach ($marques as $marque): ?>
+                    <option value="<?= $marque['Id_marques'] ?>" <?= ($marque['Id_marques'] == $vehicule['Id_marques']) ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($marque['nom_marques']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select><br>
 
             <label>Modèle :</label>
-            <input type="text" name="modele" value="<?= htmlspecialchars($vehicule['nom_modele']) ?>" required><br>
+            <select name="Id_modeles" required>
+                <?php foreach ($modeles as $modele): ?>
+                    <option value="<?= $modele['Id_modeles'] ?>" <?= ($modele['Id_modeles'] == $vehicule['Id_modeles']) ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($modele['nom_modele']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select><br>
+
 
             <label>Immatriculation :</label>
             <input type="text" name="immatriculation" value="<?= htmlspecialchars($vehicule['immatriculation']) ?>"
@@ -145,9 +171,6 @@ if (!$vehicule) {
             <input type="number" name="kilometrage" value="<?= htmlspecialchars($vehicule['kilometrage']) ?>"
                 required><br>
 
-            <label>Motorisation :</label>
-            <input type="text" name="motorisation" value="<?= htmlspecialchars($vehicule['motorisation']) ?>"
-                required><br>
         </div>
 
         <button type="submit" class="btnModification">Enregistrer les modifications</button>

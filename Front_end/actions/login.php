@@ -32,6 +32,21 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
                 $_SESSION['id'] = $user['Id_utilisateurs'];
                 $_SESSION['garage_solidaire'] = $user['garage_solidaire'];
 
+                $getVehicule = $conn->prepare('SELECT * FROM utilisateurs INNER JOIN vehicules ON utilisateurs.Id_utilisateurs = vehicules.Id_utilisateurs INNER JOIN marques ON vehicules.Id_marques = marques.Id_marques INNER JOIN modeles ON vehicules.Id_modeles = modeles.Id_modeles WHERE utilisateurs.Id_utilisateurs = :id');
+                $getVehicule->bindParam(':id', $_SESSION['id']);
+                $getVehicule->execute();
+                $recupVehic = $getVehicule->fetch(PDO::FETCH_ASSOC);
+
+                $_SESSION['vehicules'] = [
+                    'Id_vehicule' => $recupVehic['Id_vehicule'],
+                    'marque_vehicules' => $recupVehic['nom_marques'],
+                    'modele_vehicules' => $recupVehic['nom_modele'],
+                    'immatriculation' => $recupVehic['immatriculation'],
+                    'annee' => $recupVehic['annee']
+                ];
+
+                // $_SESSION['vehicules'] = $user['vehicules'];
+
                 $result = ["status" => "success"];
             }
 

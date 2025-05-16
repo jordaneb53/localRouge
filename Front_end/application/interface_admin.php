@@ -1,33 +1,39 @@
 <?php
 require $_SERVER["DOCUMENT_ROOT"] . '/config/db.php';
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    if (isset($_POST['teste'])) {  // Vérification si le bouton "Mettre à jour" a bien été cliqué
-        // Capture des données du formulaire
-        $id = $_POST['falseId'];
-        $nom = $_POST['nom'];
-        $prenom = $_POST['prenom'];
-        $adresse = $_POST['adresse'];
-        $ville = $_POST['ville'];
-        $code_postal = $_POST['code_postal'];
-        $telephone = $_POST['telephone'];
-        $email = $_POST['email'];
-        $garage_solidaire = $_POST['garage_solidaire'];
+// Semaine courante
+$debutSemaine = date('Y-m-d', strtotime('monday this week'));
+$finSemaine = date('Y-m-d', strtotime('sunday this week'));
 
-        // Assure-toi que la requête UPDATE est correcte
-        $updateStmt = $conn->prepare("UPDATE utilisateurs SET nom_utilisateurs = ?, prenom_utilisateurs = ?, adresse_utilisateurs = ?, ville_utilisateurs = ?, code_postal = ?, telephone_utilisateurs = ?, email_utilisateurs = ?, garage_solidaire = ? WHERE Id_utilisateurs = ?");
-        $updateStmt->execute([$nom, $prenom, $adresse, $ville, $code_postal, $telephone, $email, $garage_solidaire, $id]);
+// // Récupérer toutes les réservations
+// $stmt = $conn->prepare("SELECT r.*, v.immatriculation, e.nom_employes, e.prenom_employes 
+//                        FROM reservation r
+//                        LEFT JOIN vehicules v ON r.Id_vehicule = v.Id_vehicule
+//                        LEFT JOIN employes e ON r.Id_employes = e.Id_employes
+//                        WHERE r.date_fin BETWEEN :debut AND :fin");
+// $stmt->execute([
+//     'debut' => $debutSemaine,
+//     'fin' => $finSemaine
+// ]);
+// $reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        // Si la mise à jour réussit, afficher un message
-        echo "Client mis à jour avec succès.";
+// // Organisation pour accès rapide
+// $reservation_map = [];
 
-        // Rediriger après mise à jour
-        header('Location: interface_admin.php');
-        exit;
-    } else {
-        echo "Le bouton de mise à jour n'a pas été cliqué.";
-    }
-}
+// foreach ($reservations as $res) {
+//     $jour = date('N', strtotime($res['date_fin'])); // 1 = lundi, ..., 7 = dimanche
+//     $heureDebut = strtotime($res['heure_debut']);
+//     $heureFin = strtotime($res['heure_fin']);
+
+//     // On liste tous les créneaux de 15 min entre début et fin
+//     while ($heureDebut < $heureFin) {
+//         $heure = date('H:i', $heureDebut);
+//         $reservation_map[$jour][$heure][] = $res;
+//         $heureDebut = strtotime('+15 minutes', $heureDebut);
+//     }
+// }
+// ?>
+
 
 ?>
 <!DOCTYPE html>
@@ -75,21 +81,76 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </ul>
         </div>
         <div class="content-section active" id="planning">
+            <div class="table-container">
+                <table border="1" cellpadding="5" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Heure</th>
+                            <th>Lundi</th>
+                            <th>Mardi</th>
+                            <th>Mercredi</th>
+                            <th>Jeudi</th>
+                            <th>Vendredi</th>
+                            <th>Samedi</th>
+                            <th>Dimanche</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $start = strtotime('08:00');
+                        for ($i = 0; $i <= 40; $i++) { // de 08:00 à 18:00
+                            $time = date('H:i', $start + ($i * 15 * 60));
+                            echo "<tr>";
+                            echo "<td>$time</td>";
 
+                            for ($day = 1; $day <= 7; $day++) {
+                                echo "<td>";
+
+                                if (!empty($reservation_map[$day][$time])) {
+                                    foreach ($reservation_map[$day][$time] as $res) {
+                                        echo "<div style='border-bottom: 1px solid #ccc; margin-bottom: 2px; padding-bottom: 2px;'>";
+                                        echo "<strong>" . htmlspecialchars($res['operations']) . "</strong><br>";
+                                        echo "<small>" . htmlspecialchars($res['immatriculation']) . "</small><br>";
+                                        echo "<small>" . htmlspecialchars($res['nom_employes']) . " " . htmlspecialchars($res['prenom_eployes']) . "</small>";
+                                        echo "</div>";
+                                    }
+                                }
+                                echo "</td>";
+                            }
+
+                            echo "</tr>";
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
 
         </div>
 
 
         <div class="content-section" id="pieces">
-            <h2>Pièces</h2>
-            <p>Contenu pour les pièces...</p>
+            <div class="piecesContent">
+                <h2>Pièces</h2>
+                <table class="tablePieces">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Marque</th>
+                            <th>Modèle</th>
+                            <th>Référence</th>
+                            <th>Opérations</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="piecesList"></tbody>
+                </table>
+            </div>
         </div>
         <!-- Modale de modification client -->
         <div class="content-section active" id="clients">
-            <div id="wrapper"></div> <!-- Pour GridJS -->
+            <div id="wrapper"></div>
         </div>
 
-        <!-- En dehors de #clients -->
         <div id="modal-client" class="modal-clients" style="display: none;">
             <div class="modal-content">
                 <span class="close-clients">&times;</span>

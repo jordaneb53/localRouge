@@ -1928,6 +1928,12 @@ div.usersMobile {
     cursor: pointer;
 }
 
+.closebtncross {
+    float: right;
+    font-size: 24px;
+    cursor: pointer;
+}
+
 .close:hover {
     color: red;
 }

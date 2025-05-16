@@ -13,7 +13,34 @@ if (isset($_GET['id'])) {
         exit;
     }
 }
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+    if (isset($_POST['teste'])) {  // Vérification si le bouton "Mettre à jour" a bien été cliqué
+        // Capture des données du formulaire
+        $id = $_POST['falseId'];
+        $nom = $_POST['nom'];
+        $prenom = $_POST['prenom'];
+        $adresse = $_POST['adresse'];
+        $ville = $_POST['ville'];
+        $code_postal = $_POST['code_postal'];
+        $telephone = $_POST['telephone'];
+        $email = $_POST['email'];
+        $garage_solidaire = $_POST['garage_solidaire'];
+
+        // Assure-toi que la requête UPDATE est correcte
+        $updateStmt = $conn->prepare("UPDATE utilisateurs SET nom_utilisateurs = ?, prenom_utilisateurs = ?, adresse_utilisateurs = ?, ville_utilisateurs = ?, code_postal = ?, telephone_utilisateurs = ?, email_utilisateurs = ?, garage_solidaire = ? WHERE Id_utilisateurs = ?");
+        $updateStmt->execute([$nom, $prenom, $adresse, $ville, $code_postal, $telephone, $email, $garage_solidaire, $id]);
+
+        // Si la mise à jour réussit, afficher un message
+        echo "Client mis à jour avec succès.";
+
+        // Rediriger après mise à jour
+        header('Location: interface_admin.php');
+        exit;
+    } else {
+        echo "Le bouton de mise à jour n'a pas été cliqué.";
+    }
+}
 ?>
 
 <form method="POST">

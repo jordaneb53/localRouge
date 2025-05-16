@@ -95,15 +95,11 @@ $vehicule = $stmt_vehicule->fetch(PDO::FETCH_ASSOC);
                         // Modification de la requête pour récupérer marque, modèle, année et kilométrage
                         $sql = "
 SELECT 
-    m.nom_marques AS marque,
-    mo.nom_modele AS modele,
-    v.annee,
-    v.kilometrage
+    *
 FROM vehicules v
 JOIN marques m ON v.Id_marques = m.Id_marques
-JOIN modeles mo ON mo.Id_modeles = v.Id_modeles
+JOIN modeles mo ON v.Id_modeles = mo.Id_modeles
 WHERE v.Id_utilisateurs = :utilisateur_id";
-
 
                         $stmt = $conn->prepare($sql);
                         $stmt->bindParam(':utilisateur_id', $utilisateur_id);
@@ -113,30 +109,29 @@ WHERE v.Id_utilisateurs = :utilisateur_id";
                         // Vérification de la présence de véhicules pour cet utilisateur
                         if ($vehicules) {
                             foreach ($vehicules as $vehicule) {
-                                // Vérification et échappement des valeurs avant l'affichage
-                                $marque = isset($vehicule['marque']) ? htmlspecialchars($vehicule['marque']) : 'Marque non disponible';
-                                $modele = isset($vehicule['modele']) ? htmlspecialchars($vehicule['modele']) : 'Modèle non disponible';
-                                $annee = isset($vehicule['annee']) && !is_null($vehicule['annee']) ? htmlspecialchars($vehicule['annee']) : 'Année non disponible';
-                                $kilometrage = isset($vehicule['kilometrage']) && !is_null($vehicule['kilometrage']) ? htmlspecialchars($vehicule['kilometrage']) : 'Kilométrage non disponible';
+                                // Conversion explicite des valeurs en chaîne et gestion de null
+                                $marque = isset($vehicule['nom_marques']) && $vehicule['nom_marques'] !== null ? htmlspecialchars(strval($vehicule['nom_marques'])) : 'Marque non disponible';
+                                $modele = isset($vehicule['nom_modele']) && $vehicule['nom_modele'] !== null ? htmlspecialchars(strval($vehicule['nom_modele'])) : 'Modèle non disponible';
+                                $annee = isset($vehicule['annee']) && $vehicule['annee'] !== null ? htmlspecialchars(strval($vehicule['annee'])) : 'Année non disponible';
+                                $kilometrage = isset($vehicule['kilometrage']) && $vehicule['kilometrage'] !== null ? htmlspecialchars(strval($vehicule['kilometrage'])) : 'Kilométrage non disponible';
 
-                                // Affichage des informations du véhicule
                                 echo "<tr>
-                            <td>" . $marque . "</td>
-                            <td>" . $modele . "</td>
-                            <td>" . $annee . "</td>
-                            <td>" . $kilometrage . " km</td>
-                        </tr>";
+            <td>" . $marque . "</td>
+            <td>" . $modele . "</td>
+            <td>" . $annee . "</td>
+            <td>" . $kilometrage . " km</td>
+        </tr>";
                             }
                         } else {
-                            // Si aucun véhicule n'est associé à l'utilisateur, afficher des champs vides
                             echo "<tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>";
+        <td colspan='5'>Aucun véhicule enregistré</td>
+    </tr>";
                         }
                         ?>
+
+
+
+
                     </table>
                     <button id="openModalVehicule">Ajouter un véhicule</button>
                 </div>
@@ -151,32 +146,36 @@ WHERE v.Id_utilisateurs = :utilisateur_id";
         <!-- La fenêtre modale -->
         <div id="modalVehicule" class="modal">
             <div class="modal-content">
-                <span id="closeModalVehicule" class="close">&times;</span>
+                <span id="closeModalVehicule" class="closebtncross">&times;</span>
                 <h3>Ajouter un véhicule</h3>
                 <form action="actions/ajout_vehicule.php" method="post">
                     <label for="nom_marques">Marque :</label>
-                    <select name="nom_marques" id="marqueSelect" required>
-                        <option value="">Sélectionner une marque</option>
+                    <select name="marques" id="marqueSelect" required>
+                        <option value="" disabled selected>Sélectionner une marque</option>
                         <?php
-                        // Affichage des marques à partir de la table marques
-                        $stmt = $conn->prepare("SELECT DISTINCT nom_marques FROM marques ORDER BY nom_marques");
+                        $stmt = $conn->prepare("SELECT Id_marques, nom_marques FROM marques ORDER BY nom_marques");
                         $stmt->execute();
                         $marques = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                         foreach ($marques as $m) {
-                            echo "<option value=\"" . htmlspecialchars($m['nom_marques']) . "\">" . htmlspecialchars($m['nom_marques']) . "</option>";
+                            echo "<option value=\"" . htmlspecialchars($m['Id_marques']) . "\">" . htmlspecialchars($m['nom_marques']) . "</option>";
                         }
                         ?>
                     </select>
 
+
                     <label for="modele_vehicules">Modèle :</label>
                     <select name="modele_vehicules" id="modeleSelect" required>
                         <option value="">Sélectionnez d'abord une marque</option>
-                    </select>
+                        <?php
 
-                    <label for="motorisation">Motorisation :</label>
-                    <select name="motorisation" id="motorisationSelect" required>
-                        <option value="">Sélectionnez d'abord un modèle</option>
+                        $stmt = $conn->prepare("SELECT * FROM modeles");
+                        $stmt->execute();
+                        $modeles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        foreach ($modeles as $m) {
+                            echo "<option value=\"" . htmlspecialchars($m['Id_modeles']) . "\">" . htmlspecialchars($m['nom_modele']) . "</option>";
+                        }
+                        ?>
                     </select>
 
                     <label for="immatriculation">Immatriculation :</label>
