@@ -51,6 +51,14 @@ main {
 
 .content-section.active {
     display: flex;
+    justify-content: center;
+    /* Centrage horizontal */
+    align-items: center;
+    /* Centrage vertical */
+    text-align: center;
+    background-color: rgb(228, 220, 220);
+    padding: 20px;
+    flex: 1;
 }
 
 h1 {
@@ -413,54 +421,19 @@ li:hover .sousMenu {
     justify-content: center;
 }
 
-.content-section .table-container {
-    width: 100%;
-    padding: 20px;
-    margin-top: 1600px;
-}
-
-.table-container table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th,
-td {
-    border: 1px solid #e8e8e8;
-    padding: 4px 8px;
+.reservations h2 {
     text-align: center;
-    margin-top: 500px;
+    margin-bottom: 20px;
+    /* Un peu d'espace sous le titre */
 }
 
-th {
+.reservations th {
     background-color: #292929;
+    color: white;
 }
 
-td:hover {
+.reservations td {
     background-color: #e7e5e5;
     color: black;
-    cursor: pointer;
-}
-
-.meca {
-    background-color: #f98583;
-    color: #e8e8e8;
-    text-shadow: 2px 2px 2px #292929;
-}
-
-.caro {
-    background-color: rgb(234, 169, 89);
-    color: #e8e8e8;
-    text-shadow: 2px 2px 2px #292929;
-}
-
-.gar {
-    background-color: rgb(151, 195, 240);
-    color: #e8e8e8;
-    text-shadow: 2px 2px 2px #292929;
-}
-
-.time-col {
-    background-color: #292929;
-    font-weight: bold;
+    padding: 15px;
 }

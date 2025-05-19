@@ -2,7 +2,7 @@
 require $_SERVER["DOCUMENT_ROOT"] . '/config/db.php';
 
 // Récupérer les données du formulaire
-$nom_employes = $_POST['username'];
+$nom_employes = $_POST['nom_employes'];
 $mot_de_passe_employes = $_POST['password'];
 
 // Requête pour vérifier les informations d'identification

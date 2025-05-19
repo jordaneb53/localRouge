@@ -137,7 +137,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
             // Définir le rôle en fonction de garage_solidaire
-            $role_id = $garage_solidaire ? 4 : 3; // 1 = client_solidaire, 0 = client_fidel
+            $role_id = $garage_solidaire ? 4 : 3; // 4 = client_solidaire, 3 = client_fidel
             echo "ID nouvel utilisateur : " . $utilisateur_id;
             // Insérer dans la table pivot role_utilisateurs
             $stmtRole = $conn->prepare("INSERT INTO role_utilisateurs (Id_utilisateurs, Id_role) VALUES (:Id_utilisateurs, :Id_role)");

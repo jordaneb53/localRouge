@@ -294,3 +294,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    fetch('../actions/get_reservations.php')
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.querySelector('#reservationTable tbody');
+            data.forEach(res => {
+                const row = `
+                    <tr>
+                        <td>${res.type_reparations}</td>
+                        <td>${res.date_debut}</td>
+                        <td>${res.heure_debut.substring(0, 5)}</td>
+                        <td>${res.nom_utilisateurs}</td>
+                        <td>${res.prenom_utilisateurs}</td>
+                        <td>${res.telephone_utilisateurs}</td>
+                        <td>${res.nom_marques}</td>
+                        <td>${res.nom_modele}</td>
+                        <td>${res.immatriculation}</td>
+                        <td>${res.annee}</td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        })
+        .catch(err => console.error('Erreur chargement réservations:', err));
+});

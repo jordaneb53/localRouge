@@ -59,7 +59,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <h2>Prendre un rendez-vous</h2>
                     <form id="formRdv" action="/actions/traitement_rdv.php" method="post">
 
-                        <label>Type de réparation :</label>
+                        <label for="typeReparation">Type de réparation :</label>
                         <input type="hidden" id="Id_operations" name="Id_operations">
                         <input type="hidden" id="Id_vehicule" name="Id_vehicule"
                             value="<?= $_SESSION['vehicules']['Id_vehicule'] ?>">
@@ -68,15 +68,15 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <input type="text" id="typeReparation" name="typeReparation" readonly>
 
 
-                        <label>Date :</label>
+                        <label for="dateRdv">Date :</label>
                         <input type="text" id="dateRdv" name="dateRdv" readonly>
 
 
-                        <label>Créneau horaire :</label>
+                        <label for="horaireRdv">Créneau horaire :</label>
                         <input type="text" id="horaireRdv" name="horaireRdv" readonly>
 
 
-                        <label>Véhicule :</label>
+                        <label for="vehiculeClient">Véhicule :</label>
                         <input type="text" id="vehiculeClient" name="vehiculeClient" readonly>
 
 
